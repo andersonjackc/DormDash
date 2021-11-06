@@ -1,0 +1,19 @@
+﻿@page
+@model WebApplication1.Pages.CreateAccountModel
+@{
+}
+
+
+
+<div class="login-box dark-mode">
+    <h1 class="dark-mode">Create an Account</h1>
+    <form method="POST" runat="server" action="">
+        <input type="text" class="dark-mode" placeholder="Username (YCP E-mail)" id="username">
+        <input type="password" class="dark-mode" placeholder="Password" id="password">
+        <input type="password" class="dark-mode" placeholder="Confirm Password" id="confirm-password">
+        <div class="login-div">
+            <button type="submit" id="login-button">Sign Up</button>
+        </div>
+        <p class="pt-3">Already have an account? Sign in <a class="d-inline text-light btn-link" asp-page="/Login">here</a></p>
+    </form>
+</div>

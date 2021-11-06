@@ -14,11 +14,11 @@ namespace WebApplication1
         Employee,
         Customer
     }
-    
+
     public class User
     {
 
-        public User( int id, UserType userType, String email, String plainTextPassword)
+        public User(int id, UserType userType, String email, String plainTextPassword)
         {
             this.id = id;
             this.userType = userType;
@@ -26,20 +26,20 @@ namespace WebApplication1
             //hash & salt passowrd
             this.salt = generateSalt(70);
             this.hashPWD = HashPassword(plainTextPassword, this.salt, 10101, 70);
-            
+
         }
 
         public int id { get; set; }
         public UserType userType { get; set; }
         public String email { get; set; }
-      
+
         public String hashPWD { get; set; }
 
         public String salt { get; set; }
 
         public String generateSalt(int numBytes)
         {
-            
+
             var saltBytes = new byte[numBytes];
 
             using (var provider = new RNGCryptoServiceProvider())
@@ -59,4 +59,5 @@ namespace WebApplication1
                 return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(nHash));
             }
         }
+    }
 }
