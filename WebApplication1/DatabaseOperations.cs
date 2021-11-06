@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
@@ -10,11 +9,13 @@ namespace WebApplication1
 {
     public class DatabaseOperations
     {
+        public DatabaseOperations()
+        {
+
+        }
 
         public MySqlConnection GetMySqlConnection( )
         {
-            
-
             string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
             return new MySqlConnection(connStr);
         }
@@ -65,25 +66,33 @@ namespace WebApplication1
 
 
 
-
-        public void test()
+        public static bool LogUserIn(string username, string password)
         {
-            Console.WriteLine("TEST");
-
-            string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-            MySqlConnection conn = new MySqlConnection(connStr);
+            string userSalt = " ";
+            string userHash = " ";
+            MySqlConnection conn = DatabaseOperations.GetMySqlConnection("root", "ycp_dormdash", "3306", "root");
             try
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
 
-                string sql = "SELECT * FROM tutorials_tbl";
+                string sql = "SELECT salt, hash from users where email ='" + username + "';";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
-
                 while (rdr.Read())
                 {
-                    Console.WriteLine(rdr[0] + " -- " + rdr[1]);
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value)
+                    {
+                        userSalt = rdr[0].ToString();
+                        userHash = rdr[1].ToString();
+                        Console.Write(userSalt + "  :  " + userHash);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error retrieving hash and salt");
+                        return false;
+                    }
+
                 }
                 rdr.Close();
             }
@@ -91,12 +100,21 @@ namespace WebApplication1
             {
                 Console.WriteLine(ex.ToString());
             }
-
             conn.Close();
             Console.WriteLine("Done.");
-        }
 
-        public void insertOrder(Order order)
+            string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
+            if (userHash == hashedPass)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+      
+      public void insertOrder(Order order)
         {
             MySqlConnection conn = GetMySqlConnection();
 
@@ -105,14 +123,14 @@ namespace WebApplication1
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
 
-                string sql = "INSERT INTO 'orders' ('order_id', 'status', 'userid', 'DESTINATION', 'ordered_items', 'total', 'datetime') " +
-                    "VALUES (@orderid, @status, @userid, @dest, @items, @total, @datetime)";
+                string sql = "INSERT INTO orders (status, userid, DESTINATION, ordered_items, total, datetime) " +
+                    "VALUES (@status, @userid, @dest, @items, @total, @datetime)";
 
                 cmd.CommandText = sql;
-                cmd.Parameters.AddWithValue("@orderid", order.id);
                 cmd.Parameters.AddWithValue("@status", order.Status);
                 cmd.Parameters.AddWithValue("@userid", order.userId);
-                cmd.Parameters.AddWithValue("@dest", order.orderDestination);
+                String dest = order.orderDestination.building + ":" + order.orderDestination.roomNumber;
+                cmd.Parameters.AddWithValue("@dest", dest);
                 String items = "";
                 foreach(MenuItem item in order.orderedItems)
                 {
@@ -136,9 +154,8 @@ namespace WebApplication1
             }
 
         }
-    
-
-
-    }   
-
+    }
 }
+
+
+        
