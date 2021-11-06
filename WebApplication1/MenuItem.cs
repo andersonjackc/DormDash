@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace WebApplication1
 {
     public class MenuItem
     {
+        [JsonConstructor]
         public MenuItem(int id, String name, String description, String imagePath, double price, Boolean available)
         {
             this.Name = name;

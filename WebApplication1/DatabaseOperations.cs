@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
+using WebApplication1;
+
 namespace WebApplication1
 {
     public class DatabaseOperations
@@ -248,7 +250,7 @@ namespace WebApplication1
                 {
                     if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
                     {
-                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)rdr[4], (Boolean)rdr[5]);
+                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)(decimal)rdr[4], ((int)rdr[5]) == 1 ? true : false);
                         menuItems.Add(tempItem);
                     }
                     
@@ -291,9 +293,9 @@ namespace WebApplication1
                         String[] menuItemsStringArray = rdr[5].ToString().Split('$');
                         foreach(String item in menuItemsStringArray)
                         {
-                            String[] menuItemVals = item.Split(':');
-                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
-                            tempMenuItemList.Add(tempMenuItem);
+                           String[] menuItemVals = item.Split(':');
+                           MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                           tempMenuItemList.Add(tempMenuItem);
                         }
 
                         Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[2].ToString()), (double)rdr[3], dest, tempMenuItemList);

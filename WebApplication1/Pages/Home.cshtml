@@ -1,8 +1,25 @@
 ﻿@page
 @model DormDash.Pages.HomeModel
-@{
-}
+@using DormDash;
+@using Microsoft.AspNetCore.Http;
+
+
 
 <div class="container">
-    HOME
+    @{List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems");
+
+        foreach (var menuItem in menuItems)
+        {
+            <tr>
+                <td>
+                    @menuItem.Name
+                </td>
+                <td>
+
+                    @menuItem.price
+                </td>
+
+            </tr>
+        }
+    }
 </div>
