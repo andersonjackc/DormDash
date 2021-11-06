@@ -13,9 +13,8 @@ namespace DormDashTests
         public void Setup()
         {
             testUser2 = new User(5000, UserType.Customer, 120.0,123.0, "test1@ycp.edu", "password123");
-            DatabaseOperations dob = new DatabaseOperations();
 
-            dob.insertUser(testUser2);
+            DatabaseOperations.insertUser(testUser2);
         }
 
         [Test]

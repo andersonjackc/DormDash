@@ -21,7 +21,7 @@ namespace WebApplication1
         }
 
 
-        public void insertUser(User user)
+        public static void insertUser(User user)
         {
             string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
             MySqlConnection conn = new MySqlConnection(connStr);
