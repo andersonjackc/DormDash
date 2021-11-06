@@ -265,6 +265,39 @@ namespace WebApplication1
             }
         }
 
+        /*public static List<MenuItem> selectOrdersByUserID(int userID)
+        {
+
+            MySqlConnection conn = GetMySqlConnection();
+            try
+            {
+                conn.Open();
+                List<MenuItem> menuItems = new List<MenuItem>();
+
+                string sql = "SELECT * from orders where userid = @id;";
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
+                    {
+                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)rdr[4], (Boolean)rdr[5]);
+                        menuItems.Add(tempItem);
+                    }
+
+
+                }
+                rdr.Close();
+                return menuItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return null;
+            }
+        }*/
 
     }
 }
