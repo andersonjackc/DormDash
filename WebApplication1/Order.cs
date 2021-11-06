@@ -18,13 +18,14 @@ namespace WebApplication1
             complete
         }
 
-        public Order(int id, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems)
+        public Order(int id, int userId, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems)
         {
             this.id = id;
             this.orderTime = DateTime.Now;
             this.runningTotal = 0;
             this.orderDestination = dest;
             this.orderedItems = orderedItems;
+            this.userId = userId;
         }
 
         public Destination orderDestination { get; set; }
