@@ -13,40 +13,24 @@ namespace WebApplication1.Pages
 {
     public class CreateAccountModel : PageModel
     {
+
+        public string username;
+        public string password;
+        public string confirmPassword;
         public void OnGet()
         {
-           
+
         }
 
         public void OnPost()
         {
-            string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
 
-                string sql = "SELECT * FROM ycp_dormdash";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                MySqlDataReader rdr = cmd.ExecuteReader();
+            username = Request.Form["username"];
+            password = Request.Form["password"];
+            confirmPassword = Request.Form["confirmPassword"];
 
-                while (rdr.Read())
-                {
-                    Console.WriteLine(rdr[0] + " -- " + rdr[1]);
-                }
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
 
-            conn.Close();
-            Console.WriteLine("Done.");
         }
-
-
     }
 
 
