@@ -17,6 +17,12 @@ namespace WebApplication1
             this.available = available;
         }
 
+        public MenuItem(String name, double price)
+        {
+            this.Name = name;
+            this.price = price;
+        }
+
         public String imagePath { get; set; }
         public String Name { get; set; }
         public String description { get; set; }
