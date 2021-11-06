@@ -13,7 +13,7 @@ id INT(10) PRIMARY KEY,
 user_type INT(2),
 dining_balance DECIMAL(12,2),
 flex_balance DECIMAL(12,2),
-email VARCHAR(20) UNIQUE, 
+email VARCHAR(50) UNIQUE, 
 salt VARCHAR (2000), 
 hash VARCHAR (2000));
 
