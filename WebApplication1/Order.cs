@@ -7,20 +7,34 @@ namespace WebApplication1
 {
     public class Order
     {
-        private List<MenuItem> orderedItems; 
 
-        public Order(int id, DateTime orderTime, double runningTotal, Destination  dest )
+        public enum status
+        {
+            waiting,
+            acknowledged,
+            done,
+            pickupReady,
+            delivering,
+            complete
+        }
+
+        public Order(int id, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems)
         {
             this.id = id;
             this.orderTime = DateTime.Now;
             this.runningTotal = 0;
             this.orderDestination = dest;
+            this.orderedItems = orderedItems;
         }
 
         public Destination orderDestination { get; set; }
         public int id { get; set; }
         public DateTime orderTime { get; set; }
         public double runningTotal { get; set; }
+        public List<MenuItem> orderedItems { get; set; }
+        public status Status { get; set; }
+
+        public int userId { get; set; }
 
         //adds the item to the order & updates the running total
         public void addToOrder(MenuItem newItem)
