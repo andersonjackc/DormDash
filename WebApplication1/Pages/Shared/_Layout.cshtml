@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using System;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ISession session = HttpContextAccessor.HttpContext.Session;
+    string username;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,14 +38,29 @@
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse order-3">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Login">Login </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/CreateAccount">Sign Up</a>
-                        </li>
-                    </ul>
+                    @if (((username = session.GetString("username")) != null))
+                    {
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <p class="nav-link text-light">Hi, @username</p>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Logout">Sign Out</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/Login">Login </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/CreateAccount">Sign Up</a>
+                            </li>
+                        </ul>
+                    }
+
                 </div>
 
             </div>

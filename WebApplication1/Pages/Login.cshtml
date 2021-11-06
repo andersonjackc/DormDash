@@ -1,14 +1,23 @@
 ﻿@page
 @model LoginModel
+@using Microsoft.AspNetCore.Http
+@using System;
 @{
+    string err;
+}
+
+
+@if (((err = HttpContext.Session.GetString("errMessage")) != null))
+{
+    <div class="error-text">@err</div>
 }
 
 
 <div class="login-box dark-mode">
     <h1 class="dark-mode">Login</h1>
     <form method="POST" action="">
-        <input type="text" class="dark-mode" placeholder="Username" id="username" required>
-        <input type="password" class="dark-mode" placeholder="Password" id="password" required>
+        <input type="email" class="dark-mode" placeholder="Username" id="username" name="username" required>
+        <input type="password" class="dark-mode" placeholder="Password" id="password" name="password" required>
 
         <div class="login-div">
             <button type="submit" id="login-button">Login</button>

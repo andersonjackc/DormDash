@@ -10,57 +10,53 @@ using System.Data.SqlClient;
 using System.Configuration;
 using MySql.Data;
 using MySql.Data.MySqlClient;
-
+using Microsoft.AspNetCore.Http;
+using WebApplication1;
+using System.Text;
 
 namespace WebApplication1.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class LoginModel : PageModel
     {
-   
-            public string RequestId { get; set; }
+        public string username;
+        public string password;
+        public string RequestId { get; set; }
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-            public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
-            private readonly ILogger<LoginModel> _logger;
-
-            public LoginModel(ILogger<LoginModel> logger)
-            {
-                _logger = logger;
-            }
-
-            public void OnGet()
-            {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            }
+        private readonly ILogger<LoginModel> _logger;
 
 
+        public LoginModel(ILogger<LoginModel> logger)
+        {
+            _logger = logger;
+        }
+
+  
+
+        public void OnGet()
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        }
+
+           
         public void OnPost()
         {
-            string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-
-                string sql = "SELECT * FROM orders;";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                MySqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    Console.WriteLine(rdr[0] + " -- " + rdr[1] + "--" + rdr[2] + "--" + rdr[3]);
-                }
-                rdr.Close();
+            username = Request.Form["username"];
+            password = Request.Form["password"];
+            if (DatabaseOperations.LogUserIn(username, password)){
+                HttpContext.Session.SetString("username", username);
+                Response.Redirect("/Home");
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex.ToString());
+                //(Encoding.ASCII.GetBytes("Error: Invalid Username or Password"));
+                HttpContext.Session.SetString("errMessage", "Invalid Username or Password");
+                Response.Redirect("/Login");
+               
             }
 
-            conn.Close();
-            Console.WriteLine("Done.");
+
         }
 
     }

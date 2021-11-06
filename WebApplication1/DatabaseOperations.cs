@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
@@ -10,9 +9,12 @@ namespace WebApplication1
 {
     public class DatabaseOperations
     {
+        public DatabaseOperations()
+        {
 
+        }
 
-        public MySqlConnection GetMySqlConnection(String user, String database, String port, String password )
+        public static MySqlConnection GetMySqlConnection(String user, String database, String port, String password )
         {
             //"server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
             string connStr = "server=localhost;user="+ user+";database="+ database +";port=" +port + ";password=root";
@@ -82,33 +84,54 @@ namespace WebApplication1
         }
     
 
-    }
 
-    public MySQLConnection GetConnection(String databaseName, )
-    {
-        string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-        MySqlConnection conn = new MySqlConnection(connStr);
-        try
+        public static bool LogUserIn(string username, string password)
         {
-            Console.WriteLine("Connecting to MySQL...");
-            conn.Open();
-
-            string sql = "SELECT * FROM tutorials_tbl";
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read())
+            string userSalt = " ";
+            string userHash = " ";
+            MySqlConnection conn = DatabaseOperations.GetMySqlConnection("root", "ycp_dormdash", "3306", "root");
+            try
             {
-                Console.WriteLine(rdr[0] + " -- " + rdr[1]);
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+
+                string sql = "SELECT salt, hash from users where email ='" + username + "';";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value)
+                    {
+                        userSalt = rdr[0].ToString();
+                        userHash = rdr[1].ToString();
+                        Console.Write(userSalt + "  :  " + userHash);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error retrieving hash and salt");
+                        return false;
+                    }
+
+                }
+                rdr.Close();
             }
-            rdr.Close();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+
+            string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
+            if (userHash == hashedPass)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
-
-    
 
 }
