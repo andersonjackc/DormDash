@@ -1,0 +1,101 @@
+
+--USER DATABASE
+-----------------------------------------------------------------
+
+create database ycp_dormdash;
+
+use ycp_dormdash;
+
+DROP TABLE if exists users; 
+DROP TABLE if exists orders;
+CREATE TABLE users (
+id INT(10) PRIMARY KEY,
+user_type INT(2),
+dining_balance DECIMAL(12,2),
+flex_balance DECIMAL(12,2),
+email VARCHAR(20) UNIQUE, 
+salt VARCHAR (2000), 
+hash VARCHAR (2000));
+
+INSERT INTO users 
+(id, user_type, dining_balance, flex_balance, email, salt, hash)
+VALUES(900, 0, 10.24, 100.27, 'bkearney1@ycp.edu', 'mysalt', 'myhash'),
+(901,1, 1000.24, 0.27, 'jack@ycp.edu', 'mysalt', 'myhash'),
+(902,2, 590.24, 100.27, 'dan@ycp.edu', 'mysalt', 'myhash'),
+(903, 2,20.24, 100.27, 'todd@ycp.edu', 'mysalt', 'myhash')
+;
+
+
+-----------------------------------------------------------------
+
+--ORDER DATABASE
+
+--make into an enum 
+--status (int) 
+--0: awaiting ack from sparts
+--1: order done 
+--2: waiting for pickup 
+--3: on the way 
+--4: complete
+
+
+DROP TABLE IF exists orders;
+CREATE TABLE orders(
+order_id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+status INT(1), 
+userid INT(10), 
+DESTINATION VARCHAR(40),
+FOREIGN KEY (userid) REFERENCES users(id),
+ordered_items VARCHAR(1000),
+total DECIMAL(15,2),
+datetime DATE
+);
+
+INSERT INTO orders
+(status, userid, destination, ordered_items, total, datetime)
+VALUES( 0,900, 'kinsley::123', '$$calzone::12.00$$pizza::4.00$$', 12.34, CURDATE()),
+( 1,901,'yourmomshouse::herbedroom', '$$sushi::20.00$$', 20.00, CURDATE()),
+(2,902,'humanities::20', '$$chips::2.00$$pizza::4.00$$', 6.00, CURDATE()),
+(3,903,'manor_south::143', '$$calzone::12.00$$pizza::4.00$$', 16.00, CURDATE())
+;
+
+
+
+--format of the orderered_item string -> '....$$itemname::itemprice$$....'
+
+
+-----------------------------------------------------------------
+--sparts menu database
+
+DROP TABLE IF exists sparts_menu;
+CREATE TABLE sparts_menu(
+	itemid INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	itemname varchar(30),
+	itemdescription varchar(100),
+	price DECIMAL(12,2)
+);
+
+INSERT INTO sparts_menu
+(itemname, itemdescription,price)
+VALUES
+('pizza','fresh hot pizza', 8.00),
+('sushi', 'california roll!', 9.00),
+('calzone', 'good calzone',10.00);
+
+
+
+
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
