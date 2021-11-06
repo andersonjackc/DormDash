@@ -122,10 +122,10 @@ namespace WebApplication1
                 String items = "";
                 foreach(MenuItem item in order.orderedItems)
                 {
-                    items += "$";
                     items += item.Name;
                     items += ":";
                     items += item.price;
+                    items += "$";
                 }
                 cmd.Parameters.AddWithValue("@items", items);
                 cmd.Parameters.AddWithValue("@total", order.runningTotal);
@@ -265,31 +265,45 @@ namespace WebApplication1
             }
         }
 
-        /*public static List<MenuItem> selectOrdersByUserID(int userID)
+        public static List<Order> selectOrdersByUserID(int userID)
         {
 
             MySqlConnection conn = GetMySqlConnection();
             try
             {
                 conn.Open();
-                List<MenuItem> menuItems = new List<MenuItem>();
+                List<Order> orders = new List<Order>();
 
                 string sql = "SELECT * from orders where userid = @id;";
-
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@id", userID);
+
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value)
                     {
-                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)rdr[4], (Boolean)rdr[5]);
-                        menuItems.Add(tempItem);
+
+                        String[] destinationStringArray = rdr[4].ToString().Split(':');
+                        Destination dest = new Destination((building)Int32.Parse(destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+
+                        List <MenuItem> tempMenuItemList = new List<MenuItem>();
+                        String[] menuItemsStringArray = rdr[5].ToString().Split('$');
+                        foreach(String item in menuItemsStringArray)
+                        {
+                            String[] menuItemVals = item.Split(':');
+                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                            tempMenuItemList.Add(tempMenuItem);
+                        }
+
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[2].ToString()), (double)rdr[3], dest, tempMenuItemList);
+                        orders.Add(tempOrder);
                     }
 
 
                 }
                 rdr.Close();
-                return menuItems;
+                return orders;
             }
             catch (Exception ex)
             {
@@ -297,7 +311,7 @@ namespace WebApplication1
                 conn.Close();
                 return null;
             }
-        }*/
+        }
 
     }
 }
