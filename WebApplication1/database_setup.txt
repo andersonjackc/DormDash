@@ -48,15 +48,17 @@ DESTINATION VARCHAR(40),
 FOREIGN KEY (userid) REFERENCES users(id),
 ordered_items VARCHAR(1000),
 total DECIMAL(15,2),
-datetime DATE
+datetime DATE,
+claimed INT(1)
 );
 
 INSERT INTO orders
-(status, userid, destination, ordered_items, total, datetime)
-VALUES( 0,900, 'kinsley::123', '$$calzone::12.00$$pizza::4.00$$', 12.34, CURDATE()),
-( 1,901,'kinsley::118', '$$sushi::20.00$$', 20.00, CURDATE()),
-(2,902,'humanities::20', '$$chips::2.00$$pizza::4.00$$', 6.00, CURDATE()),
-(3,903,'manor_south::143', '$$calzone::12.00$$pizza::4.00$$', 16.00, CURDATE())
+(status, userid, destination, ordered_items, total, datetime, claimed)
+VALUES
+( 0,900, 'kinsley::123', '$$calzone::12.00$$pizza::4.00$$', 12.34, CURDATE(),0),
+( 1,901,'kinsley::118', '$$sushi::20.00$$', 20.00, CURDATE(),1),
+(2,902,'humanities::20', '$$chips::2.00$$pizza::4.00$$', 6.00, CURDATE(),0),
+(3,903,'manor_south::143', '$$calzone::12.00$$pizza::4.00$$', 16.00, CURDATE(), 0)
 ;
 
 
