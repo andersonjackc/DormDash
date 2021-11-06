@@ -53,19 +53,6 @@ namespace WebApplication1
             }
         }
 
-        public void CloseMySqlConnection(MySqlConnection connection)
-        {
-            try
-            {
-                connection.Close();
-            }catch(Exception ex)
-            {
-                Console.WriteLine("There was an error closing the SQL connection!!");
-            }
-        }
-
-
-
         public static bool LogUserIn(string username, string password)
         {
             string userSalt = " ";
@@ -146,6 +133,33 @@ namespace WebApplication1
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
+        }
+
+        public void insertMenuItem(MenuItem menuItem)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "INSERT INTO sparts_menu (itemname, itemdescription, price) " +
+                    "VALUES (@name, @descript, @price)";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@name", menuItem.Name);
+                cmd.Parameters.AddWithValue("@descript", menuItem.description);
+                cmd.Parameters.AddWithValue("@price", menuItem.price);
+                cmd.ExecuteNonQuery();
+                conn.Close();
             }
             catch (Exception ex)
             {
