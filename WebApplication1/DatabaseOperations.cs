@@ -82,33 +82,6 @@ namespace WebApplication1
         }
     
 
-    }
-
-    public MySQLConnection GetConnection(String databaseName, )
-    {
-        string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-        MySqlConnection conn = new MySqlConnection(connStr);
-        try
-        {
-            Console.WriteLine("Connecting to MySQL...");
-            conn.Open();
-
-            string sql = "SELECT * FROM tutorials_tbl";
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Console.WriteLine(rdr[0] + " -- " + rdr[1]);
-            }
-            rdr.Close();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
-
-    
+    }   
 
 }
