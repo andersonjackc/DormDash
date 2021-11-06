@@ -18,7 +18,7 @@ namespace WebApplication1
     public class User
     {
 
-        public User(int id, UserType userType, String email, String plainTextPassword)
+        public User(int id, UserType userType, double flexBalance, double diningBalance, String email, String plainTextPassword)
         {
             this.id = id;
             this.userType = userType;
@@ -26,18 +26,23 @@ namespace WebApplication1
             //hash & salt passowrd
             this.salt = generateSalt(70);
             this.hashPWD = HashPassword(plainTextPassword, this.salt, 10101, 70);
+            this.flexBalance = flexBalance;
+            this.diningBalance = diningBalance;
 
         }
 
+        public double diningBalance { get; set; }
+        public double flexBalance { get; set; }
+
         public int id { get; set; }
         public UserType userType { get; set; }
-        public String email { get; set; }
+        public string email { get; set; }
 
-        public String hashPWD { get; set; }
+        public string hashPWD { get; set; }
 
-        public String salt { get; set; }
+        public string salt { get; set; }
 
-        public String generateSalt(int numBytes)
+        public string generateSalt(int numBytes)
         {
 
             var saltBytes = new byte[numBytes];
