@@ -12,12 +12,10 @@ namespace WebApplication1
     {
 
 
-        public MySqlConnection GetMySqlConnection(String user, String database, String port, String password )
+        public MySqlConnection GetMySqlConnection()
         {
-            //"server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
-            string connStr = "server=localhost;user="+ user+";database="+ database +";port=" +port + ";password=root";
+            string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
             return new MySqlConnection(connStr);
-            
         }
 
         public void WriteToDatabase(MySqlConnection connection)
@@ -79,6 +77,47 @@ namespace WebApplication1
 
             conn.Close();
             Console.WriteLine("Done.");
+        }
+
+        public void insertOrder(Order order)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "INSERT INTO 'orders' ('order_id', 'status', 'userid', 'DESTINATION', 'ordered_items', 'total', 'datetime') " +
+                    "VALUES (@orderid, @status, @userid, @dest, @items, @total, @datetime)";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@orderid", order.id);
+                cmd.Parameters.AddWithValue("@status", order.Status);
+                cmd.Parameters.AddWithValue("@userid", order.userId);
+                cmd.Parameters.AddWithValue("@dest", order.orderDestination);
+                String items = "";
+                foreach(MenuItem item in order.orderedItems)
+                {
+                    items += "$";
+                    items += item.Name;
+                    items += ":";
+                    items += item.price;
+                }
+                cmd.Parameters.AddWithValue("@items", items);
+                cmd.Parameters.AddWithValue("@total", order.runningTotal);
+                cmd.Parameters.AddWithValue("@datetime", order.orderTime);
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
         }
     
 
