@@ -72,16 +72,17 @@ CREATE TABLE sparts_menu(
 	itemid INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	itemname varchar(30),
 	itemdescription varchar(100),
+	imagepath varchar(100),
 	price DECIMAL(12,2),
 	available INT(1)
 );
 
 INSERT INTO sparts_menu
-(itemname, itemdescription,price, available)
+(itemname, itemdescription,imagepath, price, available)
 VALUES
-('pizza','fresh hot pizza', 8.00, 1),
-('sushi', 'california roll!', 9.00, 0),
-('calzone', 'good calzone',10.00, 1);
+('pizza','fresh hot pizza', '/pizza', 8.00, 1),
+('sushi', 'california roll!', '/sushi',9.00, 0),
+('calzone', 'good calzone','/calzone',10.00, 1);
 
 
 
