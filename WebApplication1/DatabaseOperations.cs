@@ -14,7 +14,7 @@ namespace WebApplication1
 
         }
 
-        public MySqlConnection GetMySqlConnection( )
+        public static MySqlConnection GetMySqlConnection( )
         {
             string connStr = "server=localhost;user=root;database=ycp_dormdash;port=3306;password=root";
             return new MySqlConnection(connStr);
@@ -70,7 +70,7 @@ namespace WebApplication1
         {
             string userSalt = " ";
             string userHash = " ";
-            MySqlConnection conn = DatabaseOperations.GetMySqlConnection("root", "ycp_dormdash", "3306", "root");
+            MySqlConnection conn = GetMySqlConnection();
             try
             {
                 Console.WriteLine("Connecting to MySQL...");
