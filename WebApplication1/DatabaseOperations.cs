@@ -101,7 +101,8 @@ namespace WebApplication1
             }
         }
       
-      public void insertOrder(Order order)
+        //returns the ID of the order inserted on success
+      public int insertOrder(Order order)
         {
             MySqlConnection conn = GetMySqlConnection();
 
@@ -131,13 +132,31 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@datetime", order.orderTime);
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
-                conn.Close();
 
+                sql = "SELECT MAX(order_id) from orders;";
+                cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
+                int maxID;
+                    if (rdr[0] != DBNull.Value)
+                    {
+                        maxID = Int32.Parse(rdr[0].ToString());
+                        
+                    }
+                    else
+                    {
+                        maxID = -1;
+                    }
+                
+                rdr.Close();
+                conn.Close();
+                return maxID;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 conn.Close();
+                return -1;
             }
 
         }
@@ -168,6 +187,50 @@ namespace WebApplication1
             }
 
         }
+
+        public void updateOrder(Order order)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "UPDATE orders SET status=@status , userid=@userid , DESTINATION=@dest , ordered_items=@items , total=@total , datetime=@datetime " +
+                    "WHERE order_id = @id";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@status", order.Status);
+                cmd.Parameters.AddWithValue("@userid", order.userId);
+                String dest = order.orderDestination.building + ":" + order.orderDestination.roomNumber;
+                cmd.Parameters.AddWithValue("@dest", dest);
+                String items = "";
+                foreach (MenuItem item in order.orderedItems)
+                {
+                    items += "$";
+                    items += item.Name;
+                    items += ":";
+                    items += item.price;
+                }
+                cmd.Parameters.AddWithValue("@items", items);
+                cmd.Parameters.AddWithValue("@total", order.runningTotal);
+                cmd.Parameters.AddWithValue("@datetime", order.orderTime);
+                cmd.Parameters.AddWithValue("@id", order.id);
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
+        }
+
+
     }
 }
 
