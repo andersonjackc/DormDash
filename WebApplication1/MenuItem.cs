@@ -7,7 +7,7 @@ namespace WebApplication1
 {
     public class MenuItem
     {
-        public MenuItem(int id, String name, String description, String imagePath, double price)
+        public MenuItem(int id, String name, String description, String imagePath, double price, Boolean available)
         {
             this.Name = name;
             this.price = price;
