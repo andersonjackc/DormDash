@@ -14,6 +14,7 @@ namespace WebApplication1
             this.description = description;
             this.id = id;
             this.imagePath = imagePath;
+            this.available = available;
         }
 
         public String imagePath { get; set; }
@@ -21,5 +22,7 @@ namespace WebApplication1
         public String description { get; set; }
         public double price { get; set; }
         public int id { get; set; }
+
+        public Boolean available { get; set; }
     }
 }

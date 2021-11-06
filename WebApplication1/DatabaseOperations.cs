@@ -53,19 +53,6 @@ namespace WebApplication1
             }
         }
 
-        public void CloseMySqlConnection(MySqlConnection connection)
-        {
-            try
-            {
-                connection.Close();
-            }catch(Exception ex)
-            {
-                Console.WriteLine("There was an error closing the SQL connection!!");
-            }
-        }
-
-
-
         public static bool LogUserIn(string username, string password)
         {
             string userSalt = " ";
@@ -114,7 +101,8 @@ namespace WebApplication1
             }
         }
       
-      public void insertOrder(Order order)
+        //returns the ID of the order inserted on success
+      public int insertOrder(Order order)
         {
             MySqlConnection conn = GetMySqlConnection();
 
@@ -144,6 +132,93 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@datetime", order.orderTime);
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
+
+                sql = "SELECT MAX(order_id) from orders;";
+                cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
+                int maxID;
+                    if (rdr[0] != DBNull.Value)
+                    {
+                        maxID = Int32.Parse(rdr[0].ToString());
+                        
+                    }
+                    else
+                    {
+                        maxID = -1;
+                    }
+                
+                rdr.Close();
+                conn.Close();
+                return maxID;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return -1;
+            }
+
+        }
+
+        public void insertMenuItem(MenuItem menuItem)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "INSERT INTO sparts_menu (itemname, itemdescription, price) " +
+                    "VALUES (@name, @descript, @price)";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@name", menuItem.Name);
+                cmd.Parameters.AddWithValue("@descript", menuItem.description);
+                cmd.Parameters.AddWithValue("@price", menuItem.price);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
+        }
+
+        public void updateOrder(Order order)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "UPDATE orders SET status=@status , userid=@userid , DESTINATION=@dest , ordered_items=@items , total=@total , datetime=@datetime " +
+                    "WHERE order_id = @id";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@status", order.Status);
+                cmd.Parameters.AddWithValue("@userid", order.userId);
+                String dest = order.orderDestination.building + ":" + order.orderDestination.roomNumber;
+                cmd.Parameters.AddWithValue("@dest", dest);
+                String items = "";
+                foreach (MenuItem item in order.orderedItems)
+                {
+                    items += "$";
+                    items += item.Name;
+                    items += ":";
+                    items += item.price;
+                }
+                cmd.Parameters.AddWithValue("@items", items);
+                cmd.Parameters.AddWithValue("@total", order.runningTotal);
+                cmd.Parameters.AddWithValue("@datetime", order.orderTime);
+                cmd.Parameters.AddWithValue("@id", order.id);
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
                 conn.Close();
 
             }
@@ -154,6 +229,43 @@ namespace WebApplication1
             }
 
         }
+
+
+        public static List<MenuItem> selectMenuItems()
+        {
+            
+            MySqlConnection conn = GetMySqlConnection();
+            try
+            {
+                conn.Open();
+                List<MenuItem> menuItems = new List<MenuItem>();
+
+                string sql = "SELECT * from sparts_menu;";
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
+                    {
+                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)rdr[4], (Boolean)rdr[5]);
+                        menuItems.Add(tempItem);
+                    }
+                    
+
+                }
+                rdr.Close();
+                return menuItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return null;
+            }
+        }
+
+
     }
 }
 
