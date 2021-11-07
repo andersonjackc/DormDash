@@ -26,6 +26,7 @@ namespace DormDash.Pages
 
             HttpContext.Session.SetComplexObject<List<Order>>("waitingOrders",waitingOrders);
             HttpContext.Session.SetComplexObject<List<Order>>("ackedOrders", ackedOrders);
+            HttpContext.Session.SetComplexObject<List<Order>>("pickupOrders", pickupOrders);
 
 
 
