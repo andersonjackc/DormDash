@@ -46,7 +46,7 @@ namespace WebApplication1.Pages
             password = Request.Form["password"];
             if (DatabaseOperations.LogUserIn(username, password)){
                 HttpContext.Session.SetString("username", username);
-                Response.Redirect("/Home");
+                Response.Redirect("/Menu");
             }
             else
             {

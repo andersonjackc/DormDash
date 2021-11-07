@@ -2,26 +2,27 @@
 @model DormDash.Pages.OrdersModel
 @using DormDash;
 @using Microsoft.AspNetCore.Http;
+@using WebApplication1;
 @{
 }
 
-
+<h1 class="text-center">Orders</h1>
 
 <div class="container">
-    @{List<Order> orders = HttpContext.Session.GetComplexObject<List<Order>>("orderList");
+    @{List<Order> orders = HttpContext.Session.GetComplexObject<List<Order>>("orderList"); }
 
-        foreach (var order in orders)
-        {
-        <div class="row">
-            <div class="col">
-                order
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
+        @{ foreach (var orderItem in orders)
+            {
+                <div class="row">
+                    <div class="col">
+                        @orderItem.id
+                    </div>
+                    <div class="col">
+                        @orderItem.orderTime
+                    </div>
+                </div>
               
                  
+            }
         }
-    }
 </div>

@@ -10,8 +10,8 @@
     <form method="POST" runat="server" action="">
         <input type="text" class="dark-mode" placeholder="Username (YCP E-mail)" name="username" id="username">
         <input type="text" class="dark-mode" placeholder="YCP ID#" name="ycpid" id="ycpid">
-        <input type="password" class="dark-mode" placeholder="Password" name="password" id="password">
-        <input type="password" class="dark-mode" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword">
+        <input type="password" class="dark-mode" placeholder="Password" name="password" id="password" minlength="8">
+        <input type="password" class="dark-mode" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" minlength="8">
         <select class="dark-mode" name="usertype" required>
             <option selected disabled hidden>Account Type</option>
             <option value="Customer">Customer</option>
