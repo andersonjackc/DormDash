@@ -45,7 +45,7 @@ namespace DormDash.Pages
             roomNum = Int32.Parse(Request.Form["roomNum"]);
             dest = new Destination(blding, roomNum);
             paymentMethod = Request.Form["payment_method"];
-            
+            Console.WriteLine(paymentMethod);
 
             string[] itemArr = items.Split(',');
 
@@ -59,7 +59,6 @@ namespace DormDash.Pages
                     totalOrderPrice += menuItem.price;
                 }
 
-             
                 // check if uswer has sufficient funds for order
                 if(paymentMethod == "flex")
                 {
@@ -72,9 +71,7 @@ namespace DormDash.Pages
                     {
                         user.flexBalance -= totalOrderPrice;
                         DatabaseOperations.updateUser(user);
-                        HttpContext.Session.TryGetAndRemoveKey<User>("user");
                         HttpContext.Session.SetComplexObject<User>("user", user);
-                        Console.WriteLine(user.flexBalance);
                     }
                 }
                 else if(paymentMethod == "dining")
@@ -86,11 +83,10 @@ namespace DormDash.Pages
                     }
                     else
                     {
-                       ;
+                        user.diningBalance -= totalOrderPrice;
                         DatabaseOperations.updateUser(user);
-                        HttpContext.Session.TryGetAndRemoveKey<User>("user");
-                        HttpContext.Session.SetComplexObject<User>("user", user);
 
+                        HttpContext.Session.SetComplexObject<User>("user", user);
 
                     }
                 }

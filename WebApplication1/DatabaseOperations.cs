@@ -535,7 +535,7 @@ namespace WebApplication1
                 User tempUser = null;
                 if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[5] != DBNull.Value)
                 {
-                    tempUser = new User((int)rdr[0], (UserType)(int)rdr[1], (double)(decimal)rdr[2], (double)(decimal)rdr[3], rdr[4].ToString());
+                    tempUser = new User((int)rdr[0], (UserType)Enum.Parse(typeof(UserType), rdr[1].ToString()), (double)(decimal)rdr[3], (double)(decimal)rdr[2], rdr[4].ToString());
                 }
 
 
@@ -560,8 +560,8 @@ namespace WebApplication1
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
 
-                string sql = "UPDATE users SET user_type = @user_type, dining_balance = @dining_balance, flex_balance = @flex_balance, email = @email " +
-                    "WHERE id = @id";
+                string sql = "UPDATE users SET user_type = @user_type, dining_balance = @dining_balance, flex_balance = @flex_balance, email = @email WHERE id = @id;";
+
                 Console.WriteLine(user.diningBalance + ":" + user.flexBalance);
                 cmd.CommandText = sql;
                 cmd.Parameters.AddWithValue("@user_type", (int)user.userType);
