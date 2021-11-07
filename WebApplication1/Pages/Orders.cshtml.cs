@@ -22,11 +22,14 @@ namespace DormDash.Pages
             }
             else if(loggedInCustomer.userType == UserType.Employee)
             {
-                List<Order> ordersReadyToPick;
+                List<Order> ordersReadyToPickUp = DatabaseOperations.selectOrdersByStatus(Order.status.pickupReady);
+                HttpContext.Session.SetComplexObject<List<Order>>("orderList", ordersReadyToPickUp);
             }
             else
             {
                 // Sparts admin
+                Response.Redirect("/SpartsAdmin");
+                return;
             }
 
         }
