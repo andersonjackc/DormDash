@@ -19,8 +19,7 @@ namespace DormDash.Pages
         public void OnGet()
         {
             //get user and query db for 'user'
-            int orderNumber = Int32.Parse(HttpContext.Session.GetString("newOrderId"));
-
+            
            
 
         }
