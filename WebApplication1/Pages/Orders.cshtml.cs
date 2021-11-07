@@ -11,18 +11,16 @@ namespace DormDash.Pages
 {
     public class OrdersModel : PageModel
     {
-        UserType userType;
         public void OnGet()
-        {
+        { 
+            User loggedInCustomer = Utils.GetComplexObject<User>(HttpContext.Session, "user");
 
-            if(userType == UserType.Customer)
+            if(loggedInCustomer.userType == UserType.Customer)
             {
-                User loggedInCustomer = Utils.GetComplexObject<User>(HttpContext.Session, "user");
-
                 List<Order> orderList = DatabaseOperations.selectOrdersByUserID(loggedInCustomer.id);
                 HttpContext.Session.SetComplexObject<List<Order>>("orderList", orderList);
             }
-            else if(userType == UserType.Employee)
+            else if(loggedInCustomer.userType == UserType.Employee)
             {
                 List<Order> ordersReadyToPick;
             }

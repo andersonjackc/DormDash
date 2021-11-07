@@ -1,8 +1,8 @@
-﻿@page
+@page
 @model DormDash.Pages.MenuModel
 @using DormDash;
 @using Microsoft.AspNetCore.Http;
-@{ 
+@{
     string errMessage;
     User user;
     Destination dest;
@@ -14,81 +14,92 @@
 
 @if ((errMessage = HttpContext.Session.GetString("errMessage")) != null)
 {
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Whoops!</strong> You have to purchase at least one item.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Whoops!</strong> You have to purchase at least one item.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
-<div class="container">
-    @{ List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems"); }
-    @{
-        foreach (MenuItem menuItem in menuItems)
-        {
-        <div class="card-dark" style="width: 18rem;">
-            <img src=".@menuItem.imagePath" width="200" height="200">
-            <div class="card-body dark-mode">
-                <h5 class="card-title text-middle">@menuItem.Name</h5>
-                <p class="card-text">Price: $<span name="orderPrice">@menuItem.price</span></p>
-                @if (menuItem.available)
-                {
-                    <label for="orderItem">Add to order</label>
-                    <input type="checkbox" id="@menuItem.id" name="orderItem" value="@menuItem.id" style="width:auto;">
-                }
-                else
-                {
-                    <p>This item is currently sold out.</p>
-                }
 
+    <div class="container">
+        @{ List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems"); }
+        @{
+            foreach (MenuItem menuItem in menuItems)
+            {
+                <div class="card-dark" style="width: 18rem;">
+                  <img src=".@menuItem.imagePath" width="200" height="200">
+                    <div class="card-body dark-mode">
+                        <h5 class="card-title text-middle">@menuItem.Name</h5>
+                        <p class="card-text">Price: $<span name="orderPrice">@menuItem.price</span></p>
+                        @if (menuItem.available)
+                        {
+                            <label for="orderItem">Add to order</label>
+                            <input type="checkbox" id="@menuItem.id" name="orderItem" value="@menuItem.id" style="width:auto;">
+                        }
+                        else
+                        {
+                            <p>This item is currently sold out.</p>
+                        }
+
+                    </div>
+                </div>
+
+            }
+            <label for="dest">Select your location</label>
+            <select class="dark-mode" name="dest" id="dest" required>
+                @{foreach (building location in Enum.GetValues(typeof(building)))
+                    {
+                        <option value="@((int)location)">@location</option>
+
+                    }
+
+                }
+            </select>
+            <br />
+            <label for="roomNum">Room Number</label>
+            <input type="text" pattern="[0-9]+" class="form-inline d-inline-block dark-mode" name="roomNum" id="roomNum" required>
+            <br />
+            <label>How are you paying today?</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="flex" name="payment_method" value="flex" checked="checked" required>
+                <label class="form-check-label" for="html">Flex</label><br>
             </div>
-        </div>
-
-        }
-        <label for="dest">Select your location</label>
-        <select class="dark-mode" name="dest" id="dest" required>
-            @{foreach (building location in Enum.GetValues(typeof(building)))
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="dining" name="payment_method" value="dining">
+                <label class="form-check-label" for="css">Dining</label><br>
+            </div>
+            @if ((user = HttpContext.Session.GetComplexObject<User>("user")) != null)
                 {
-                    <option value="@((int)location)">@location</option>
-
+                <button class="btn btn-outline-success" type="button" onclick="createAndSubmitForm()">Place Order</button>
                 }
-
-              }
-        </select>
-        <br />
-        <label for="roomNum">Room Number</label>
-        <input type="text" pattern="[0-9]+" class="form-inline d-inline-block dark-mode" name="roomNum" id="roomNum" required />
-        <br />
-        @if ((user = HttpContext.Session.GetComplexObject<User>("user")) != null)
-        {
-            <button class="btn btn-outline-success" type="button" onclick="createAndSubmitForm()">Add Items to Order</button>
-        }
-        else
-        {
-            <a class="btn btn-outline-success" asp-page="/Login">Login to Order</a>
-        }
-    }
+            else
+                {
+                <a class="btn btn-outline-success" asp-page="/Login">Login to Order</a>
+                }
+            }
 
 
-</div>
+    </div>
 
-<form method="post" hidden="true" id="orderForm">
-    @Html.AntiForgeryToken();
-</form>
+    <form method="post" id="orderForm" hidden="true">
+        @{Html.AntiForgeryToken();}
+    </form>
+
 
 
 
 <script type="text/javascript">
     function createAndSubmitForm() {
         var orderItemsArr = document.getElementsByName("orderItem");
-        var orderPricesArr = document.getElementsByName("orderPrice");
         var destination = document.getElementById("dest");
         var itemsToPurchase = "";
-        var roomNum = document.getElementsById("roomNum");
+        var roomNum = document.getElementById("roomNum");
+        var paymentMethod = document.getElementsByName("payment_method")[0];
 
         for (orderItem of orderItemsArr) {
             if (orderItem.checked) {
-                itemsToPurchase+=orderItem.value+",";
+                itemsToPurchase += orderItem.value + ",";
             }
         }
         itemsToPurchase = itemsToPurchase.substring(0, itemsToPurchase.length - 1);
@@ -99,12 +110,23 @@
         input.setAttribute("value", itemsToPurchase);
         input.setAttribute("name", "itemsToPurchase");
 
-        field.appendChild(input);
-        field.appendChild(destination);
-        document.body.appendChild(field);
+        if (itemsToPurchase == null || destination.value == null || roomNum.value == 0 || paymentMethod.value == null || itemsToPurchase == null) {
 
-        field.submit();
-       
 
+                @{ HttpContext.Session.SetString("errMessage", "One or more required field is missing. Please try again.");
+                    }
+
+        } else {
+            field.appendChild(paymentMethod);
+            field.appendChild(input);
+            field.appendChild(destination);
+            field.appendChild(roomNum);
+            document.body.appendChild(field);
+            field.submit();
+        }
+
+        
+
+        
     }
 </script>

@@ -29,7 +29,7 @@ namespace DormDash.Pages
         public Destination dest;
 
         public int newOrderId;
-
+        public string paymentMethod;
         // user
         public void OnGet()
         {
@@ -44,10 +44,11 @@ namespace DormDash.Pages
             blding = (building)Int32.Parse(Request.Form["dest"]);
             roomNum = Int32.Parse(Request.Form["roomNum"]);
             dest = new Destination(blding, roomNum);
+            
 
             string[] itemArr = items.Split(',');
 
-            if (itemArr.Length > 1){
+            if (itemArr.Length >= 1 && itemArr[0].Length >= 1){
                 foreach(string itemId in itemArr)
                 {
                     menuItems.Add(DatabaseOperations.selectMenuItemsById(int.Parse(itemId)));
@@ -59,6 +60,36 @@ namespace DormDash.Pages
 
              
                 // check if uswer has sufficient funds for order
+                if(paymentMethod == "flex")
+                {
+                    if (user.flexBalance < totalOrderPrice)
+                    {
+                        HttpContext.Session.SetString("errMessage", "Insufficient Funds on Flex.");
+                        Response.Redirect("/Menu");
+                    }
+                    else
+                    {
+                        user.flexBalance -= totalOrderPrice;
+                        DatabaseOperations.updateUser(user);
+                        HttpContext.Session.SetComplexObject<User>("user", user);
+                    }
+                }
+                else if(paymentMethod == "dining")
+                {
+                    if(user.diningBalance < totalOrderPrice)
+                    {
+                        HttpContext.Session.SetString("errMessage", "Insufficient Funds on Dining.");
+                        Response.Redirect("/Menu");
+                    }
+                    else
+                    {
+                        user.diningBalance -= totalOrderPrice;
+                        DatabaseOperations.updateUser(user);
+                        HttpContext.Session.SetComplexObject<User>("user", user);
+
+
+                    }
+                }
                 order = new Order(0, user.id, DateTime.Now, totalOrderPrice, dest, menuItems, false);
                 order.Status = Order.status.waiting;
                 newOrderId = DatabaseOperations.insertOrder(order);
@@ -75,7 +106,7 @@ namespace DormDash.Pages
                 {
                     order.id = newOrderId;
                     HttpContext.Session.SetComplexObject<Order>("newOrder", order);
-                    Response.Redirect("/OrderConfirm");
+                    Response.Redirect("/OrderConfirmed");
 
                 }
             }
