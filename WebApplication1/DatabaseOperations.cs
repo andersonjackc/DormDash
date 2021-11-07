@@ -468,7 +468,7 @@ namespace WebApplication1
                 MySqlCommand cmd = new MySqlCommand();
 
                 string sql = "UPDATE users SET user_type=@user_type , dining_balance=@dining_balance , flex_balance=@flex_balance , email=@email " +
-                    "WHERE user_id = @id";
+                    "WHERE id = @id";
 
                 cmd.CommandText = sql;
                 cmd.Parameters.AddWithValue("@user_type", user.userType);
@@ -477,7 +477,6 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@email", user.email);
                 cmd.Parameters.AddWithValue("@id", user.id);
                 cmd.Connection = conn;
-                cmd.Prepare();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
