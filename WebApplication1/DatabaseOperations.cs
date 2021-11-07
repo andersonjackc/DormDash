@@ -32,7 +32,7 @@ namespace WebApplication1
             {
                 conn.Open();
                 MySqlCommand command = new MySqlCommand();
-                String SQL = "INSERT INTO users (id, user_type, dining_balance, flex_balance, email, salt, hash)" +
+                String SQL = "INSERT INTO users (id, user_type, dining_balance, flex_balance, email, salt, hash) " +
                     "VALUES (@id, @user_type, @dining_balance, @flex_balance, @email, @salt, @hash)";
                 command.CommandText = SQL;
                 
@@ -84,6 +84,8 @@ namespace WebApplication1
 
                 }
                 rdr.Close();
+                conn.Close();
+
                 string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
 
                 Console.WriteLine("Done.");
@@ -226,6 +228,7 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@claimed", order.claimed);
                 cmd.Parameters.AddWithValue("@id", order.id);
                 cmd.Connection = conn;
+                cmd.Prepare();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
@@ -557,16 +560,17 @@ namespace WebApplication1
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
 
-                string sql = "UPDATE users SET user_type=@user_type , dining_balance=@dining_balance , flex_balance=@flex_balance , email=@email " +
+                string sql = "UPDATE users SET user_type = @user_type, dining_balance = @dining_balance, flex_balance = @flex_balance, email = @email " +
                     "WHERE id = @id";
-
+                Console.WriteLine(user.diningBalance + ":" + user.flexBalance);
                 cmd.CommandText = sql;
-                cmd.Parameters.AddWithValue("@user_type", user.userType);
+                cmd.Parameters.AddWithValue("@user_type", (int)user.userType);
                 cmd.Parameters.AddWithValue("@dining_balance", user.diningBalance);
                 cmd.Parameters.AddWithValue("@flex_balance", user.flexBalance);
                 cmd.Parameters.AddWithValue("@email", user.email);
                 cmd.Parameters.AddWithValue("@id", user.id);
                 cmd.Connection = conn;
+                cmd.Prepare();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 

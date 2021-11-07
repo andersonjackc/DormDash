@@ -72,7 +72,9 @@ namespace DormDash.Pages
                     {
                         user.flexBalance -= totalOrderPrice;
                         DatabaseOperations.updateUser(user);
+                        HttpContext.Session.TryGetAndRemoveKey<User>("user");
                         HttpContext.Session.SetComplexObject<User>("user", user);
+                        Console.WriteLine(user.flexBalance);
                     }
                 }
                 else if(paymentMethod == "dining")
@@ -86,6 +88,7 @@ namespace DormDash.Pages
                     {
                        ;
                         DatabaseOperations.updateUser(user);
+                        HttpContext.Session.TryGetAndRemoveKey<User>("user");
                         HttpContext.Session.SetComplexObject<User>("user", user);
 
 
