@@ -17,26 +17,15 @@
                 @foreach (var waitingOrder in waitingOrders)
                 {
                     @waitingOrder.userId
-                foreach (var item in waitingOrder.orderedItems)
-                {
+                    foreach (var item in waitingOrder.orderedItems)
+                    {
                     
-                <table>
-                    <tr>
-                        <td>
-                            @item.Name
+                
+                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
-                        </td>
-                        <td>
+                    }
 
-                            @item.price
-                        </td>
-
-                    </tr>
-                </table>
-
-                }
-
-                }
+                 }
 
             </u1>
            
