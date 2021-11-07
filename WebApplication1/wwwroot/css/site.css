@@ -162,6 +162,10 @@ input {
         outline: none;
     }
 
+    input[type="radio"]{
+        width:auto;
+    }
+
 select {
     width: 80%;
     margin-bottom: 20px;
@@ -261,4 +265,9 @@ form button {
 
 .btn-link{
     text-decoration: underline!important;
+}
+
+.list-group-item-dark {
+    color: white;
+    background-color: #323232;
 }
