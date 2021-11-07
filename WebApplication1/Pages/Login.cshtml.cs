@@ -49,7 +49,16 @@ namespace WebApplication1.Pages
                 HttpContext.Session.SetString("username", username);
                 User user = DatabaseOperations.selectUserByEmail(username);
                 HttpContext.Session.SetComplexObject<User>("user", user);
-                Response.Redirect("/Menu");
+
+                if(user.userType == UserType.SpartsAdmin)
+                {
+                    Response.Redirect("/SpartsAdmin");
+                }
+                else
+                {
+                    Response.Redirect("/Menu");
+                }
+                
             }
             else
             {
