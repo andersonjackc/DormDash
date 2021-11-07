@@ -23,7 +23,13 @@ namespace DormDash.Pages
 
         public Order order;
 
+        public building blding;
+
+        public int roomNum;
+
         public Destination dest;
+
+        public int newOrderId;
         // user
         public void OnGet()
         {
@@ -35,7 +41,9 @@ namespace DormDash.Pages
         {
             user = HttpContext.Session.GetComplexObject<User>("user");
             items = Request.Form["itemsToPurchase"];
-            dest = HttpContext.Session.GetComplexObject<Destination>("dest");
+            blding = (building)Int32.Parse(Request.Form["dest"]);
+            roomNum = Int32.Parse(Request.Form["roomNum"]);
+            dest = new Destination(blding, roomNum);
 
             string[] itemArr = items.Split(',');
 
@@ -49,10 +57,25 @@ namespace DormDash.Pages
                     totalOrderPrice += menuItem.price;
                 }
 
-
+                order.Status = Order.status.waiting;
                 // check if uswer has sufficient funds for order
                 order = new Order(0, user.id, DateTime.Now, totalOrderPrice, dest, menuItems, false);
-                DatabaseOperations.insertOrder(order);
+                newOrderId = DatabaseOperations.insertOrder(order);
+
+                // -1 means failure
+                if(newOrderId == -1)
+                {
+                    HttpContext.Session.SetString("errMessage", "An error occurred sending your order in. Please try again.");
+                    Response.Redirect("/Menu");
+
+                }
+                // else order succeeded
+                else
+                {
+                    HttpContext.Session.SetString("newOrderId", newOrderId.ToString());
+                    Response.Redirect("/OrderConfirm");
+
+                }
             }
             else
             {
