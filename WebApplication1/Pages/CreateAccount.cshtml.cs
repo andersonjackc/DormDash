@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Http;
+using DormDash;
 
 namespace WebApplication1.Pages
 {
@@ -46,6 +47,7 @@ namespace WebApplication1.Pages
 
                 DatabaseOperations.insertUser(user);
                 HttpContext.Session.SetString("username", username);
+                HttpContext.Session.SetComplexObject<User>("user", user);
                 Response.Redirect("/Menu");
                 
             }
