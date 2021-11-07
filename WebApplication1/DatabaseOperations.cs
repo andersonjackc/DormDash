@@ -271,34 +271,34 @@ namespace WebApplication1
             }
         }
 
-        public static List<MenuItem> selectMenuItemsById(int menuItemID)
+        public static MenuItem selectMenuItemsById(int menuItemID)
         {
 
             MySqlConnection conn = GetMySqlConnection();
             try
             {
                 conn.Open();
-                List<MenuItem> menuItems = new List<MenuItem>();
+                MenuItem menuItem = null;
 
                 string sql = "SELECT * from sparts_menu where itemid = @id;";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@id", menuItemID);
 
                 MySqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                rdr.Read();
+                
+                if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
                 {
-                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
-                    {
-                        Console.WriteLine((double)(decimal)rdr[4]);
-                        MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)(decimal)rdr[4], ((int)rdr[5]) == 1 ? true : false);
-                        Console.WriteLine(tempItem.price);
-                        menuItems.Add(tempItem);
-                    }
-
-
+                    Console.WriteLine((double)(decimal)rdr[4]);
+                    MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)(decimal)rdr[4], ((int)rdr[5]) == 1 ? true : false);
+                    Console.WriteLine(tempItem.price);
+                    menuItem = tempItem;
                 }
+
+
+                
                 rdr.Close();
-                return menuItems;
+                return menuItem;
             }
             catch (Exception ex)
             {
