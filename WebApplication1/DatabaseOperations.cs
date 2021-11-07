@@ -286,19 +286,22 @@ namespace WebApplication1
                     if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value)
                     {
 
-                        String[] destinationStringArray = rdr[4].ToString().Split(':');
-                        Destination dest = new Destination((building)Int32.Parse(destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+                        String[] destinationStringArray = rdr[3].ToString().Split(':');
+                        Destination dest = new Destination((building) Enum.Parse(typeof(building), destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
 
                         List <MenuItem> tempMenuItemList = new List<MenuItem>();
-                        String[] menuItemsStringArray = rdr[5].ToString().Split('$');
+                        String[] menuItemsStringArray = rdr[4].ToString().Split('$');
+                        menuItemsStringArray = menuItemsStringArray.SkipLast(1).ToArray();
                         foreach(String item in menuItemsStringArray)
                         {
                            String[] menuItemVals = item.Split(':');
-                           MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                            Console.WriteLine(menuItemVals[0] + ":" + menuItemVals[1]);
+
+                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
                            tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[2].ToString()), (double)rdr[3], dest, tempMenuItemList);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList);
                         orders.Add(tempOrder);
                     }
 
