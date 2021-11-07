@@ -46,7 +46,7 @@ namespace WebApplication1.Pages
 
                 DatabaseOperations.insertUser(user);
                 HttpContext.Session.SetString("username", username);
-                Response.Redirect("/Home");
+                Response.Redirect("/Menu");
                 
             }
             

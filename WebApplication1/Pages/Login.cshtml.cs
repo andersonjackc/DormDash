@@ -13,6 +13,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Http;
 using WebApplication1;
 using System.Text;
+using DormDash;
 
 namespace WebApplication1.Pages
 {
@@ -46,7 +47,9 @@ namespace WebApplication1.Pages
             password = Request.Form["password"];
             if (DatabaseOperations.LogUserIn(username, password)){
                 HttpContext.Session.SetString("username", username);
-                Response.Redirect("/Home");
+                User user = DatabaseOperations.selectUserByEmail(username);
+                HttpContext.Session.SetComplexObject<User>("user", user);
+                Response.Redirect("/Menu");
             }
             else
             {
