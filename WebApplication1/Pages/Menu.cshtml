@@ -21,28 +21,28 @@
         </button>
     </div>
 }
+<div class="container">
+    @{ List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems"); }
+    @{
+        foreach (MenuItem menuItem in menuItems)
+        {
+        <div class="card-dark" style="width: 18rem;">
+            <img src=".@menuItem.imagePath" width="200" height="200">
+            <div class="card-body dark-mode">
+                <h5 class="card-title text-middle">@menuItem.Name</h5>
+                <p class="card-text">Price: $<span name="orderPrice">@menuItem.price</span></p>
+                @if (menuItem.available)
+                {
+                    <label for="orderItem">Add to order</label>
+                    <input type="checkbox" id="@menuItem.id" name="orderItem" value="@menuItem.id" style="width:auto;">
+                }
+                else
+                {
+                    <p>This item is currently sold out.</p>
+                }
 
-    <div class="container">
-        @{ List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems"); }
-        @{
-            foreach (MenuItem menuItem in menuItems)
-            {
-                <div class="card-dark" style="width: 18rem;">
-                    <div class="card-body dark-mode">
-                        <h5 class="card-title text-middle">@menuItem.Name</h5>
-                        <p class="card-text">Price: $<span name="orderPrice">@menuItem.price</span></p>
-                        @if (menuItem.available)
-                        {
-                            <label for="orderItem">Add to order</label>
-                            <input type="checkbox" id="@menuItem.id" name="orderItem" value="@menuItem.id" style="width:auto;">
-                        }
-                        else
-                        {
-                            <p>This item is currently sold out.</p>
-                        }
-
-                    </div>
-                </div>
+            </div>
+        </div>
 
             }
             <label for="dest">Select your location</label>
