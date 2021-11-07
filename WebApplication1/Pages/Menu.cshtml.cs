@@ -45,7 +45,6 @@ namespace DormDash.Pages
             roomNum = Int32.Parse(Request.Form["roomNum"]);
             dest = new Destination(blding, roomNum);
             paymentMethod = Request.Form["payment_method"];
-            Console.WriteLine(paymentMethod);
 
             string[] itemArr = items.Split(',');
 
