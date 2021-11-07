@@ -17,9 +17,13 @@ namespace DormDash.Pages
 
         public List<MenuItem> menuItems = new List<MenuItem>();
 
-        public List<double> prices;
+        public double totalOrderPrice = 0.0;
+
+        public User user;
 
         public Order order;
+
+        public Destination dest;
         // user
         public void OnGet()
         {
@@ -29,7 +33,9 @@ namespace DormDash.Pages
 
         public void OnPost()
         {
+            user = HttpContext.Session.GetComplexObject<User>("user");
             items = Request.Form["itemsToPurchase"];
+            dest = HttpContext.Session.GetComplexObject<Destination>("dest");
 
             string[] itemArr = items.Split(',');
 
@@ -38,7 +44,14 @@ namespace DormDash.Pages
                 {
                     menuItems.Add(DatabaseOperations.selectMenuItemsById(int.Parse(itemId)));
                 }
+                foreach (MenuItem menuItem in menuItems)
+                {
+                    totalOrderPrice += menuItem.price;
+                }
 
+
+                // check if uswer has sufficient funds for order
+                order = new Order(0, user.id, DateTime.Now, totalOrderPrice, dest, menuItems, false);
                 DatabaseOperations.insertOrder(order);
             }
             else
