@@ -1,41 +1,33 @@
 ﻿@page
 @model DormDash.Pages.OrderConfirmedModel
 @{
-    ViewData["Title"] = "OrderConfirmed";
+    ViewData["Title"] = "Order Confirmed";
+    double totalPrice = 0.0;
 }
 @using DormDash;
 @using Microsoft.AspNetCore.Http;
 
 
-<h1>OrderConfirmed</h1>
+<h1 class="display-4">OrderConfirmed</h1>
 @{
     Order currentOrder = HttpContext.Session.GetComplexObject<Order>("newOrder");
-    <p>Order for user ID</p>
-    @currentOrder.userId
 
-    <p>Order # </p>
-    @currentOrder.id;
-    <p>Destination</p>
-    @currentOrder.orderDestination.building;
-    @currentOrder.orderDestination.roomNumber;
+    <div class="container">
+        <u1 class="list-group">
+            <li class="list-group-item list-group-item-dark">Order for user ID: @currentOrder.userId</li>
+            <li class="list-group-item list-group-item-dark">Order# @currentOrder.id</li>
+            <li class="list-group-item list-group-item-dark">@currentOrder.orderDestination.building Room @currentOrder.orderDestination.roomNumber</li>
 
-    foreach (var orderedItem in currentOrder.orderedItems)
-    {
+            @foreach (var orderedItem in currentOrder.orderedItems)
+            {
+                <li class="list-group-item list-group-item-dark">@orderedItem.Name   $@orderedItem.price</li>
+                totalPrice += orderedItem.price; 
+            }
 
-            <table>
-                <tr>
-                    <td>
-                        @orderedItem.Name
+            <li class="list-group-item list-group-item-dark">Total Price: $@totalPrice</li>
 
-                    </td>
-                    <td>
-
-                        @orderedItem.price
-                    </td>
-
-                </tr>
-            </table>
-    }
+        </u1>
+    </div>
 
 }
 

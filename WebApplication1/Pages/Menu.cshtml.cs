@@ -44,6 +44,7 @@ namespace DormDash.Pages
             blding = (building)Int32.Parse(Request.Form["dest"]);
             roomNum = Int32.Parse(Request.Form["roomNum"]);
             dest = new Destination(blding, roomNum);
+            paymentMethod = Request.Form["payment_method"];
             
 
             string[] itemArr = items.Split(',');
@@ -83,7 +84,7 @@ namespace DormDash.Pages
                     }
                     else
                     {
-                        user.diningBalance -= totalOrderPrice;
+                       ;
                         DatabaseOperations.updateUser(user);
                         HttpContext.Session.SetComplexObject<User>("user", user);
 

@@ -12,34 +12,36 @@
         @{List<Order> waitingOrders = HttpContext.Session.GetComplexObject<List<Order>>("waitingOrders");
             List<Order> ackedOrders = HttpContext.Session.GetComplexObject<List<Order>>("ackedOrders");
 
-            <h2>waiting orders</h2>
-            foreach (var waitingOrder in waitingOrders)
-            {
-                <p>Order for user ID</p>
-                @waitingOrder.userId
+            <h2 class="display-4">Waiting Orders</h2>
+            <u1>
+                @foreach (var waitingOrder in waitingOrders)
+                {
+                    @waitingOrder.userId
                 foreach (var item in waitingOrder.orderedItems)
                 {
+                    
+                <table>
+                    <tr>
+                        <td>
+                            @item.Name
 
-                    <table>
-                        <tr>
-                            <td>
-                                @item.Name
+                        </td>
+                        <td>
 
-                            </td>
-                            <td>
+                            @item.price
+                        </td>
 
-                                @item.price
-                            </td>
-
-                        </tr>
-                    </table>
+                    </tr>
+                </table>
 
                 }
 
-            }
+                }
 
+            </u1>
+           
 
-            <h2>Acknowledged orders</h2>
+            <h2>Acknowledged Orders</h2>
             foreach (var ackedOrder in ackedOrders)
             {
                 <p>Order for user ID</p>
