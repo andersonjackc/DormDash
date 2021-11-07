@@ -30,6 +30,7 @@ namespace DormDash.Pages
         public Destination dest;
 
         public int newOrderId;
+
         // user
         public void OnGet()
         {
