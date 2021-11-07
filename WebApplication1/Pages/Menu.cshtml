@@ -63,11 +63,11 @@
             <label>How are you paying today?</label>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="flex" name="payment_method" value="flex" checked="checked" required>
-                <label class="form-check-label" for="html">Flex</label>
+                <label class="form-check-label" for="flex">Flex</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" id="dining" name="payment_method" value="dining">
-                <label class="form-check-label" for="css">Dining</label>
+                <label class="form-check-label" for="dining">Dining</label>
             </div><br />
             @if ((user = HttpContext.Session.GetComplexObject<User>("user")) != null)
                 {

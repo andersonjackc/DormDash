@@ -20,11 +20,19 @@ namespace DormDash.Pages
 
             List<Order> ackedOrders = DatabaseOperations.selectOrdersByStatus(Order.status.acknowledged);
 
+            List<Order> pickupOrders = DatabaseOperations.selectOrdersByStatus(Order.status.pickupReady);
+
+
 
             HttpContext.Session.SetComplexObject<List<Order>>("waitingOrders",waitingOrders);
             HttpContext.Session.SetComplexObject<List<Order>>("ackedOrders", ackedOrders);
 
 
+
+        }
+
+        public void OnPost()
+        {
 
         }
     }

@@ -2,74 +2,73 @@
 @model DormDash.Pages.SpartsAdminModel
 @{
     ViewData["Title"] = "SpartsAdmin";
+    WebApplication1.User user;
 }
 @using DormDash;
 @using Microsoft.AspNetCore.Http;
+@using WebApplication1;
 
 
 
+@if ((user = HttpContext.Session.GetComplexObject<User>("user")).userType!=UserType.SpartsAdmin)
+{
     <div class="container">
-        @{List<Order> waitingOrders = HttpContext.Session.GetComplexObject<List<Order>>("waitingOrders");
-            List<Order> ackedOrders = HttpContext.Session.GetComplexObject<List<Order>>("ackedOrders");
+        <h1 class="display-4">You do not have permission to access this page.</h1>
+    </div>
+}
+else
+{
+<div class="container">
+    @{List<Order> waitingOrders = HttpContext.Session.GetComplexObject<List<Order>>("waitingOrders");
+        List<Order> ackedOrders = HttpContext.Session.GetComplexObject<List<Order>>("ackedOrders");
+        List<Order> pickupOrders = HttpContext.Session.GetComplexObject<List<Order>>("pickupOrders");
 
-            <h2 class="display-4">Waiting Orders</h2>
-            <u1>
-                @foreach (var waitingOrder in waitingOrders)
+
+        <h2 class="display-4">Waiting Orders</h2>
+        @foreach (var waitingOrder in waitingOrders)
+        {<u1 class="list-group">
+                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @waitingOrder.userId</li>
+                @foreach (var item in waitingOrder.orderedItems)
                 {
-                    @waitingOrder.userId
-                foreach (var item in waitingOrder.orderedItems)
-                {
-                    
-                <table>
-                    <tr>
-                        <td>
-                            @item.Name
-
-                        </td>
-                        <td>
-
-                            @item.price
-                        </td>
-
-                    </tr>
-                </table>
+                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
                 }
-
-                }
-
             </u1>
-           
-
-            <h2>Acknowledged Orders</h2>
-            foreach (var ackedOrder in ackedOrders)
-            {
-                <p>Order for user ID</p>
-                @ackedOrder.userId
-                foreach (var item in ackedOrder.orderedItems)
-                {
-
-                    <table>
-                        <tr>
-                            <td>
-                                @item.Name
-
-                            </td>
-                            <td>
-
-                                @item.price
-                            </td>
-
-                        </tr>
-                    </table>
-
-                }
-
-            }
-
-
+            <br />
         }
 
 
+        <h2 class="display-4">Acknowledged Orders</h2>
+        @foreach (var ackedOrder in ackedOrders)
+        {<u1 class="list-group">
+                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @ackedOrder.userId</li>
+                @foreach (var item in ackedOrder.orderedItems)
+                {
+                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
-    </div>
+                }
+            </u1>
+            <br />
+        }
+
+        <h2 class="display-4">Orders Ready for Pickup</h2>
+        @foreach (var pickupOrder in pickupOrders)
+        {<u1 class="list-group">
+                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @pickupOrder.userId</li>
+                @foreach (var item in pickupOrder.orderedItems)
+                {
+                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
+
+                }
+                <li class="list-group-item" style=background-color:black;color:forestgreen;>Destination: @pickupOrder.orderDestination.building: @pickupOrder.orderDestination.roomNumber</li>
+            </u1>
+            <br />
+        }
+
+    }
+
+
+
+</div>
+}
+
