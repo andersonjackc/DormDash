@@ -1,0 +1,73 @@
+﻿@page
+@model DormDash.Pages.SpartsAdminModel
+@{
+    ViewData["Title"] = "SpartsAdmin";
+}
+@using DormDash;
+@using Microsoft.AspNetCore.Http;
+
+
+
+    <div class="container">
+        @{List<Order> waitingOrders = HttpContext.Session.GetComplexObject<List<Order>>("waitingOrders");
+            List<Order> ackedOrders = HttpContext.Session.GetComplexObject<List<Order>>("ackedOrders");
+
+            <h2>waiting orders</h2>
+            foreach (var waitingOrder in waitingOrders)
+            {
+                <p>Order for user ID</p>
+                @waitingOrder.userId
+                foreach (var item in waitingOrder.orderedItems)
+                {
+
+                    <table>
+                        <tr>
+                            <td>
+                                @item.Name
+
+                            </td>
+                            <td>
+
+                                @item.price
+                            </td>
+
+                        </tr>
+                    </table>
+
+                }
+
+            }
+
+
+            <h2>Acknowledged orders</h2>
+            foreach (var ackedOrder in ackedOrders)
+            {
+                <p>Order for user ID</p>
+                @ackedOrder.userId
+                foreach (var item in ackedOrder.orderedItems)
+                {
+
+                    <table>
+                        <tr>
+                            <td>
+                                @item.Name
+
+                            </td>
+                            <td>
+
+                                @item.price
+                            </td>
+
+                        </tr>
+                    </table>
+
+                }
+
+            }
+
+
+        }
+
+
+
+    </div>

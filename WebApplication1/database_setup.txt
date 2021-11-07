@@ -63,9 +63,6 @@ VALUES
 
 
 
---format of the orderered_item string -> '....$$itemname::itemprice$$....'
-
-
 -----------------------------------------------------------------
 --sparts menu database
 
