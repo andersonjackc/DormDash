@@ -419,9 +419,9 @@ namespace WebApplication1
                 conn.Open();
                 List<Order> orders = new List<Order>();
 
-                string sql = "SELECT * from orders where claimed = @claimed;";
+                string sql = "SELECT * from orders where status = @status;";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@claimed", status);
+                cmd.Parameters.AddWithValue("@status", (Order.status)Enum.Parse(typeof(Order.status), status.ToString()));
 
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
