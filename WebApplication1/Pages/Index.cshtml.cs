@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApplication1.Pages
 {
@@ -12,6 +13,7 @@ namespace WebApplication1.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
+        public string username;
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -19,7 +21,11 @@ namespace WebApplication1.Pages
 
         public void OnGet()
         {
+            if ((username = HttpContext.Session.GetString("username"))!=null)
+            {
 
+                Response.Redirect("/menu");
+            }
         }
     }
 }
