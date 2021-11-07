@@ -18,7 +18,7 @@ namespace WebApplication1
             complete
         }
 
-        public Order(int id, int userId, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems)
+        public Order(int id, int userId, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems, Boolean claimed)
         {
             this.id = id;
             this.orderTime = DateTime.Now;
@@ -26,6 +26,7 @@ namespace WebApplication1
             this.orderDestination = dest;
             this.orderedItems = orderedItems;
             this.userId = userId;
+            this.claimed = claimed;
         }
 
         public Destination orderDestination { get; set; }
@@ -34,6 +35,8 @@ namespace WebApplication1
         public double runningTotal { get; set; }
         public List<MenuItem> orderedItems { get; set; }
         public status Status { get; set; }
+
+        public Boolean claimed { get; set; }
 
         public int userId { get; set; }
 

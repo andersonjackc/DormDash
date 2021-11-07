@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace WebApplication1
 {
@@ -26,6 +27,17 @@ namespace WebApplication1
             //hash & salt passowrd
             this.salt = generateSalt(70);
             this.hashPWD = HashPassword(plainTextPassword, this.salt, 10101, 70);
+            this.flexBalance = flexBalance;
+            this.diningBalance = diningBalance;
+
+        }
+
+        [JsonConstructor]
+        public User(int id, UserType userType, double flexBalance, double diningBalance, String email)
+        {
+            this.id = id;
+            this.userType = userType;
+            this.email = email;
             this.flexBalance = flexBalance;
             this.diningBalance = diningBalance;
 
