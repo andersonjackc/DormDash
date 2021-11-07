@@ -22,8 +22,6 @@
     </div>
 }
 
-<form method="post" id="orderForm">
-    @{Html.AntiForgeryToken();}
     <div class="container">
         @{ List<MenuItem> menuItems = HttpContext.Session.GetComplexObject<List<MenuItem>>("menuItems"); }
         @{
@@ -82,7 +80,11 @@
 
 
     </div>
-</form>
+
+    <form method="post" id="orderForm" hidden="true">
+        @{Html.AntiForgeryToken();}
+    </form>
+
 
 
 

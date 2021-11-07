@@ -84,23 +84,27 @@ namespace WebApplication1
 
                 }
                 rdr.Close();
+                string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
+
+                Console.WriteLine("Done.");
+                if (userHash == hashedPass)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
-            {
+            { 
+                conn.Close();
                 Console.WriteLine(ex.ToString());
-            }
-            conn.Close();
-            Console.WriteLine("Done.");
-
-            string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
-            if (userHash == hashedPass)
-            {
-                return true;
-            }
-            else
-            {
                 return false;
             }
+            ;
+
+            
         }
       
         //returns the ID of the order inserted on success
