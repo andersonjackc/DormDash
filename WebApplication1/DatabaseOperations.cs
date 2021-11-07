@@ -84,6 +84,8 @@ namespace WebApplication1
 
                 }
                 rdr.Close();
+                conn.Close();
+
                 string hashedPass = User.HashPassword(password, userSalt, 10101, 70);
 
                 Console.WriteLine("Done.");
