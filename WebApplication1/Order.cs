@@ -21,7 +21,7 @@ namespace WebApplication1
         public Order(int id, int userId, DateTime orderTime, double runningTotal, Destination  dest , List<MenuItem> orderedItems, Boolean claimed)
         {
             this.id = id;
-            this.orderTime = DateTime.Now;
+            this.orderTime = orderTime;
             this.runningTotal = runningTotal;
             this.orderDestination = dest;
             this.orderedItems = orderedItems;
