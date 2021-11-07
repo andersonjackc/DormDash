@@ -24,46 +24,74 @@ else
         List<Order> pickupOrders = HttpContext.Session.GetComplexObject<List<Order>>("pickupOrders");
 
 
-        <h2 class="display-4">Waiting Orders</h2>
-        @foreach (var waitingOrder in waitingOrders)
-        {<u1 class="list-group">
-                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @waitingOrder.userId</li>
-                @foreach (var item in waitingOrder.orderedItems)
-                {
-                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
+        if (waitingOrders != null)
+        {
+            <h2 class="display-4">Waiting Orders</h2>
+            @foreach (var waitingOrder in waitingOrders)
+            {<u1 class="list-group">
+                    <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @waitingOrder.userId</li>
+                    @foreach (var item in waitingOrder.orderedItems)
+                    {
+                        <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
-                }
-            </u1>
-            <br />
+                    }
+                </u1>
+                <br />
+            }
+
+        }
+        else
+        {
+            <h1 class="display-1">Currently no orders waiting.</h1>
         }
 
 
-        <h2 class="display-4">Acknowledged Orders</h2>
-        @foreach (var ackedOrder in ackedOrders)
-        {<u1 class="list-group">
-                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @ackedOrder.userId</li>
-                @foreach (var item in ackedOrder.orderedItems)
-                {
-                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
-                }
-            </u1>
-            <br />
+        if (ackedOrders != null)
+        {
+            <h2 class="display-4">Acknowledged Orders</h2>
+            @foreach (var ackedOrder in ackedOrders)
+            {<u1 class="list-group">
+                    <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @ackedOrder.userId</li>
+                    @foreach (var item in ackedOrder.orderedItems)
+                    {
+                        <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
+
+                    }
+                </u1>
+                <br />
+            }
+
+        }
+        else
+        {
+            <h1 class="display-4">Currently no acknowledged orders.</h1>
         }
 
-        <h2 class="display-4">Orders Ready for Pickup</h2>
-        @foreach (var pickupOrder in pickupOrders)
-        {<u1 class="list-group">
-                <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @pickupOrder.userId</li>
-                @foreach (var item in pickupOrder.orderedItems)
-                {
-                    <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
 
-                }
-                <li class="list-group-item" style=background-color:black;color:forestgreen;>Destination: @pickupOrder.orderDestination.building: @pickupOrder.orderDestination.roomNumber</li>
-            </u1>
-            <br />
+
+        if (pickupOrders != null)
+        {
+            <h2 class="display-4">Orders Ready for Pickup</h2>
+            @foreach (var pickupOrder in pickupOrders)
+            {<u1 class="list-group">
+                    <li class="list-group-item" style="background-color:forestgreen;color:black;">User ID: @pickupOrder.userId</li>
+                    @foreach (var item in pickupOrder.orderedItems)
+                    {
+                        <li class="list-group-item list-group-item-dark">@item.Name  $@item.price</li>
+
+                    }
+                    <li class="list-group-item" style=background-color:black;color:forestgreen;>Destination: @pickupOrder.orderDestination.building: @pickupOrder.orderDestination.roomNumber</li>
+                </u1>
+                <br />
+            }
+
         }
+        else
+        {
+            <h1 class="display-4">Currently no pickup orders.</h1>
+        }
+
 
     }
 
