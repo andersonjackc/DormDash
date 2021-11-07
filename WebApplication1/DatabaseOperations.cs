@@ -475,6 +475,7 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@dining_balance", user.diningBalance);
                 cmd.Parameters.AddWithValue("@flex_balance", user.flexBalance);
                 cmd.Parameters.AddWithValue("@email", user.email);
+                cmd.Parameters.AddWithValue("@id", user.id);
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
                 conn.Close();
