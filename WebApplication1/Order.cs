@@ -22,7 +22,7 @@ namespace WebApplication1
         {
             this.id = id;
             this.orderTime = DateTime.Now;
-            this.runningTotal = 0;
+            this.runningTotal = runningTotal;
             this.orderDestination = dest;
             this.orderedItems = orderedItems;
             this.userId = userId;

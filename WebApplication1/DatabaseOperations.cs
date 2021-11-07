@@ -104,7 +104,7 @@ namespace WebApplication1
         }
       
         //returns the ID of the order inserted on success
-      public int insertOrder(Order order)
+      public static int insertOrder(Order order)
         {
             MySqlConnection conn = GetMySqlConnection();
 
@@ -132,7 +132,7 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@items", items);
                 cmd.Parameters.AddWithValue("@total", order.runningTotal);
                 cmd.Parameters.AddWithValue("@datetime", order.orderTime);
-                cmd.Parameters.AddWithValue("@claimed", order.claimed);
+                cmd.Parameters.AddWithValue("@claimed", (order.claimed) ? 1 : 0);
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
 
@@ -252,7 +252,9 @@ namespace WebApplication1
                 {
                     if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
                     {
+                        Console.WriteLine((double)(decimal)rdr[4]);
                         MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)(decimal)rdr[4], ((int)rdr[5]) == 1 ? true : false);
+                        Console.WriteLine(tempItem.price);
                         menuItems.Add(tempItem);
                     }
                     
@@ -288,19 +290,22 @@ namespace WebApplication1
                     if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value && rdr[7] != DBNull.Value)
                     {
 
-                        String[] destinationStringArray = rdr[4].ToString().Split(':');
-                        Destination dest = new Destination((building)Int32.Parse(destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+                        String[] destinationStringArray = rdr[3].ToString().Split(':');
+                        Destination dest = new Destination((building) Enum.Parse(typeof(building), destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
 
                         List <MenuItem> tempMenuItemList = new List<MenuItem>();
-                        String[] menuItemsStringArray = rdr[5].ToString().Split('$');
+                        String[] menuItemsStringArray = rdr[4].ToString().Split('$');
+                        menuItemsStringArray = menuItemsStringArray.SkipLast(1).ToArray();
                         foreach(String item in menuItemsStringArray)
                         {
                            String[] menuItemVals = item.Split(':');
+
                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
                            tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[2].ToString()), (double)rdr[3], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+
                         orders.Add(tempOrder);
                     }
 
@@ -317,6 +322,107 @@ namespace WebApplication1
             }
         }
 
+        public static List<Order> selectOrdersByClaimed(Boolean claimed)
+        {
+
+            MySqlConnection conn = GetMySqlConnection();
+            try
+            {
+                conn.Open();
+                List<Order> orders = new List<Order>();
+
+                string sql = "SELECT * from orders where claimed = @claimed;";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@claimed", claimed);
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value && rdr[7] != DBNull.Value)
+                    {
+
+                        String[] destinationStringArray = rdr[3].ToString().Split(':');
+                        Destination dest = new Destination((building)Enum.Parse(typeof(building), destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+
+                        List<MenuItem> tempMenuItemList = new List<MenuItem>();
+                        String[] menuItemsStringArray = rdr[4].ToString().Split('$');
+                        menuItemsStringArray = menuItemsStringArray.SkipLast(1).ToArray();
+                        foreach (String item in menuItemsStringArray)
+                        {
+                            String[] menuItemVals = item.Split(':');
+
+                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                            tempMenuItemList.Add(tempMenuItem);
+                        }
+
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+
+                        orders.Add(tempOrder);
+                    }
+
+
+                }
+                rdr.Close();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return null;
+            }
+        }
+
+        public static List<Order> selectOrdersByStatus(Order.status status)
+        {
+
+            MySqlConnection conn = GetMySqlConnection();
+            try
+            {
+                conn.Open();
+                List<Order> orders = new List<Order>();
+
+                string sql = "SELECT * from orders where claimed = @claimed;";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@claimed", status);
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value && rdr[7] != DBNull.Value)
+                    {
+
+                        String[] destinationStringArray = rdr[3].ToString().Split(':');
+                        Destination dest = new Destination((building)Enum.Parse(typeof(building), destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+
+                        List<MenuItem> tempMenuItemList = new List<MenuItem>();
+                        String[] menuItemsStringArray = rdr[4].ToString().Split('$');
+                        menuItemsStringArray = menuItemsStringArray.SkipLast(1).ToArray();
+                        foreach (String item in menuItemsStringArray)
+                        {
+                            String[] menuItemVals = item.Split(':');
+
+                            MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                            tempMenuItemList.Add(tempMenuItem);
+                        }
+
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+
+                        orders.Add(tempOrder);
+                    }
+
+
+                }
+                rdr.Close();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return null;
+            }
+        }
 
         public static User selectUserByEmail(String email)
         {
@@ -350,6 +456,37 @@ namespace WebApplication1
                 conn.Close();
                 return null;
             }
+        }
+
+        public static void updateUser(User user)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "UPDATE users SET user_type=@user_type , dining_balance=@dining_balance , flex_balance=@flex_balance , email=@email " +
+                    "WHERE id = @id";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@user_type", user.userType);
+                cmd.Parameters.AddWithValue("@dining_balance", user.diningBalance);
+                cmd.Parameters.AddWithValue("@flex_balance", user.flexBalance);
+                cmd.Parameters.AddWithValue("@email", user.email);
+                cmd.Parameters.AddWithValue("@id", user.id);
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
         }
 
     }

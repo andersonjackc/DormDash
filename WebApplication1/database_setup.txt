@@ -9,7 +9,7 @@ use ycp_dormdash;
 DROP TABLE if exists users; 
 DROP TABLE if exists orders;
 CREATE TABLE users (
-id INT(10) PRIMARY KEY,
+id INT(10) PRIMARY KEY UNIQUE,
 user_type INT(2),
 dining_balance DECIMAL(12,2),
 flex_balance DECIMAL(12,2),
@@ -55,10 +55,10 @@ claimed INT(1)
 INSERT INTO orders
 (status, userid, destination, ordered_items, total, datetime, claimed)
 VALUES
-(0,900, 'kinsley:123', 'calzone:12.00$pizza:4.00$', 12.34, CURDATE(),0),
-(1,901,'kinsley:118', 'sushi:20.00$', 20.00, CURDATE(),1),
-(2,902,'humanities:20', 'chips:2.00$pizza:4.00$', 6.00, CURDATE(),0),
-(3,903,'manor_south:143', 'calzone:12.00$pizza:4.00$', 16.00, CURDATE(), 0)
+( 0,900, 'Kinsley:123', 'calzone:12.00$pizza:4.00$', 12.34, CURDATE(),0),
+( 1,901,'Kinsley:118', 'sushi:20.00$', 20.00, CURDATE(),1),
+(2,902,'Humanities:20', 'chips:2.00$pizza:4.00$', 6.00, CURDATE(),0),
+(3,903,'Manor_South:143', 'calzone:12.00$pizza:4.00$', 16.00, CURDATE(), 0)
 ;
 
 
