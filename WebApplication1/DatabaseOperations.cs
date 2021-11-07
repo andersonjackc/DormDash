@@ -477,6 +477,7 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@email", user.email);
                 cmd.Parameters.AddWithValue("@id", user.id);
                 cmd.Connection = conn;
+                cmd.Prepare();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
