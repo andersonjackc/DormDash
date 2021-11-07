@@ -132,7 +132,7 @@ namespace WebApplication1
                 cmd.Parameters.AddWithValue("@items", items);
                 cmd.Parameters.AddWithValue("@total", order.runningTotal);
                 cmd.Parameters.AddWithValue("@datetime", order.orderTime);
-                cmd.Parameters.AddWithValue("@claimed", order.claimed);
+                cmd.Parameters.AddWithValue("@claimed", (order.claimed) ? 1 : 0);
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
 
@@ -252,7 +252,9 @@ namespace WebApplication1
                 {
                     if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value)
                     {
+                        Console.WriteLine((double)(decimal)rdr[4]);
                         MenuItem tempItem = new MenuItem((int)rdr[0], rdr[1].ToString(), rdr[2].ToString(), rdr[3].ToString(), (double)(decimal)rdr[4], ((int)rdr[5]) == 1 ? true : false);
+                        Console.WriteLine(tempItem.price);
                         menuItems.Add(tempItem);
                     }
                     
