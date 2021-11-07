@@ -211,24 +211,6 @@ form button {
         outline: none;
     }
 
-h2 {
-    text-align: center;
-    color: #232c3d;
-    transition: 0.5s;
-}
-
-    h2::before {
-        content: 'Switch to Dark Mode';
-    }
-
-    h2.dark-mode {
-        color: white;
-    }
-
-        h2.dark-mode::before {
-            content: 'Switch to Light Mode';
-        }
-
 .switch {
     position: relative;
     display: inline-block;

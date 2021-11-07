@@ -18,6 +18,8 @@ namespace DormDash.Pages
         public List<MenuItem> menuItems = new List<MenuItem>();
 
         public List<double> prices;
+
+        public Order order;
         // user
         public void OnGet()
         {
@@ -36,6 +38,8 @@ namespace DormDash.Pages
                 {
                     menuItems.Add(DatabaseOperations.selectMenuItemsById(int.Parse(itemId)));
                 }
+
+                DatabaseOperations.insertOrder(order);
             }
             else
             {

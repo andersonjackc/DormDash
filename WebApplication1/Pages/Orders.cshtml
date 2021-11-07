@@ -9,9 +9,11 @@
 <h1 class="text-center">Orders</h1>
 
 <div class="container">
-    @{List<Order> orders = HttpContext.Session.GetComplexObject<List<Order>>("orderList"); }
-
-        @{ foreach (var orderItem in orders)
+    @{List<Order> orders = HttpContext.Session.GetComplexObject<List<Order>>("orderList");
+    }
+    @{ if (orders != null)
+       {
+            foreach (var orderItem in orders)
             {
                 <div class="row">
                     <div class="col">
@@ -21,8 +23,16 @@
                         @orderItem.orderTime
                     </div>
                 </div>
-              
-                 
+
+
             }
+       }
+       else
+       {
+            <h2 class="display-4">There are currently no orders on your account.</h2>
+            <br /><br />
+            <a class="btn btn-outline-success text-center" asp-page="/Menu">Order here</a>
+       }
         }
+   
 </div>
