@@ -66,6 +66,7 @@ namespace DormDash.Pages
                     {
                         HttpContext.Session.SetString("errMessage", "Insufficient Funds on Flex.");
                         Response.Redirect("/Menu");
+                        return;
                     }
                     else
                     {
@@ -80,6 +81,7 @@ namespace DormDash.Pages
                     {
                         HttpContext.Session.SetString("errMessage", "Insufficient Funds on Dining.");
                         Response.Redirect("/Menu");
+                        return;
                     }
                     else
                     {
@@ -99,6 +101,7 @@ namespace DormDash.Pages
                 {
                     HttpContext.Session.SetString("errMessage", "An error occurred sending your order in. Please try again.");
                     Response.Redirect("/Menu");
+                    return;
 
                 }
                 // else order succeeded

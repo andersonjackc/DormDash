@@ -15,7 +15,7 @@
 @if ((errMessage = HttpContext.Session.GetString("errMessage")) != null)
 {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Whoops!</strong> You have to purchase at least one item.
+        <strong>Whoops!</strong> @errMessage
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -119,8 +119,6 @@
         if (itemsToPurchase == null || destination.value == null || roomNum.value == 0 || paymentMethod.value == null || itemsToPurchase == null) {
 
 
-                @{ HttpContext.Session.SetString("errMessage", "One or more required field is missing. Please try again.");
-                    }
 
         } else {
             field.appendChild(paymentMethod);
