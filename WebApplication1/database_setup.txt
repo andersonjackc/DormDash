@@ -55,10 +55,14 @@ claimed INT(1)
 INSERT INTO orders
 (status, userid, destination, ordered_items, total, datetime, claimed)
 VALUES
-( 0,900, 'Kinsley:123', 'calzone:12.00$pizza:4.00$', 12.34, SYSDATE(),0),
-( 1,901,'Kinsley:118', 'sushi:20.00$', 20.00, SYSDATE(),1),
+( 0,900, 'Kinsley:123', 'calzone:12.00$pizza:4.00$', 16.00, SYSDATE(),0),
+( 1,901,'Kinsley:118', 'sushi:20.00$', 20.00, SYSDATE(),0),
 (2,902,'Humanities:20', 'chips:2.00$pizza:4.00$', 6.00, SYSDATE(),0),
-(3,903,'Manor_South:143', 'calzone:12.00$pizza:4.00$', 16.00, SYSDATE(), 0)
+(3,903,'Manor_South:143', 'calzone:12.00$pizza:4.00$', 16.00, SYSDATE(), 0),
+( 4,900, 'Kinsley:123', 'calzone:12.00$pizza:4.00$', 16.00, SYSDATE(),0),
+( 5,901,'Kinsley:118', 'sushi:20.00$', 20.00, SYSDATE(),0),
+(0,902,'Humanities:20', 'chips:2.00$pizza:4.00$', 6.00, SYSDATE(),0),
+(1,903,'Manor_South:143', 'calzone:12.00$pizza:4.00$', 16.00, SYSDATE(), 0)
 ;
 
 
