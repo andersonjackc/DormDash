@@ -1,0 +1,43 @@
+﻿@page
+@model DormDash.Pages.OrderConfirmedModel
+@{
+    ViewData["Title"] = "OrderConfirmed";
+}
+@using DormDash;
+@using Microsoft.AspNetCore.Http;
+
+
+<h1>OrderConfirmed</h1>
+@{
+    Order currentOrder = HttpContext.Session.GetComplexObject<Order>("newOrder");
+    <p>Order for user ID</p>
+    @curr.userId
+
+    <p>Order # </p>
+    @currentOrder.id;
+    <p>Destination</p>
+    @currentOrder.orderDestination.building;
+    @currentOrder.orderDestination.roomNumber;
+
+    foreach (var orderedItem in currentOrder.orderedItems)
+    {
+
+            <table>
+                <tr>
+                    <td>
+                        @orderedItem.Name
+
+                    </td>
+                    <td>
+
+                        @orderedItem.price
+                    </td>
+
+                </tr>
+            </table>
+    }
+
+}
+
+
+
