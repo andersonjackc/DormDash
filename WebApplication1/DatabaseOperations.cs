@@ -104,7 +104,7 @@ namespace WebApplication1
         }
       
         //returns the ID of the order inserted on success
-      public int insertOrder(Order order)
+      public static int insertOrder(Order order)
         {
             MySqlConnection conn = GetMySqlConnection();
 
@@ -458,7 +458,7 @@ namespace WebApplication1
             }
         }
 
-        public void updateUser(User user)
+        public static void updateUser(User user)
         {
             MySqlConnection conn = GetMySqlConnection();
 

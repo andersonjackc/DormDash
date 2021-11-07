@@ -12,9 +12,12 @@ namespace DormDashTests
         [SetUp]
         public void Setup()
         {
-            testUser2 = new User(5000, UserType.Customer, 120.0,123.0, "test1@ycp.edu", "password123");
+            System.Collections.Generic.List<MenuItem> menu_items = DatabaseOperations.selectMenuItems();
 
-            DatabaseOperations.insertUser(testUser2);
+            Order order = new Order(67, 903242133, DateTime.Now, 100, new Destination(building.Kinsley, 000), menu_items,false);
+
+            DatabaseOperations.updateUser(new User(903242133, UserType.Employee, 69.00, 21.00, "gggggggggggggg1@ycp.edu"));
+            DatabaseOperations.insertOrder(order);
         }
 
         [Test]
