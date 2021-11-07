@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using DormDash;
 using Microsoft.AspNetCore.Http;
 using WebApplication1;
@@ -58,9 +57,10 @@ namespace DormDash.Pages
                     totalOrderPrice += menuItem.price;
                 }
 
-                order.Status = Order.status.waiting;
+             
                 // check if uswer has sufficient funds for order
                 order = new Order(0, user.id, DateTime.Now, totalOrderPrice, dest, menuItems, false);
+                order.Status = Order.status.waiting;
                 newOrderId = DatabaseOperations.insertOrder(order);
 
                 // -1 means failure
@@ -73,7 +73,8 @@ namespace DormDash.Pages
                 // else order succeeded
                 else
                 {
-                    HttpContext.Session.SetString("newOrderId", newOrderId.ToString());
+                    order.id = newOrderId;
+                    HttpContext.Session.SetComplexObject<Order>("newOrder", order);
                     Response.Redirect("/OrderConfirm");
 
                 }
