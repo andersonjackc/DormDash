@@ -1,0 +1,37 @@
+﻿@page
+@model DormDash.Pages.AccountModel
+@{
+    ViewData["Title"] = "Account";
+
+}
+@using Microsoft.AspNetCore.Http;
+@using DormDash;
+
+
+
+    <h1>Account</h1>
+<div class="container">
+    @{List<Order> orders = HttpContext.Session.GetComplexObject<List<Order>>("userOrders");
+
+        foreach (var order in orders)
+        {
+        <tr>
+            <td>
+                @order.orderDestination
+            </td>
+            <td>
+
+                @order.orderedItems
+            </td>
+            <td>
+
+                @order.runningTotal
+            </td>
+
+
+        </tr>
+        }
+    }
+</div>
+
+
