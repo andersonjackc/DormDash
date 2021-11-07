@@ -44,22 +44,25 @@
             </div>
 
         }
+        <label for="dest">Select your location</label>
+        <select class="dark-mode" name="dest" id="dest" required>
+            @{foreach (building location in Enum.GetValues(typeof(building)))
+                {
+                    <option value="@((int)location)">@location</option>
 
-        <select name="dest" id="dest">
-            @{foreach (int i in Enum.GetValues(typeof(building)))
-                { 
-                    
                 }
-            }
         </select>
-
+        <br />
+        <label for="roomNum">Room Number</label>
+        <input type="text" class="form-inline d-inline-block dark-mode" name="roomNum" id="roomNum" required />
+        <br />
         @if ((user = HttpContext.Session.GetComplexObject<User>("user")) != null)
         {
             <button class="btn btn-outline-success" type="button" onclick="createAndSubmitForm()">Add Items to Order</button>
         }
         else
         {
-            <a class="btn btn-outline-success"asp-page="/Login">Login to Order</a>
+            <a class="btn btn-outline-success" asp-page="/Login">Login to Order</a>
         }
     }
 
@@ -76,8 +79,9 @@
     function createAndSubmitForm() {
         var orderItemsArr = document.getElementsByName("orderItem");
         var orderPricesArr = document.getElementsByName("orderPrice");
-
+        var destination = document.getElementById("dest");
         var itemsToPurchase = "";
+        var roomNum = document.getElementsById("roomNum");
 
         for (orderItem of orderItemsArr) {
             if (orderItem.checked) {
@@ -93,6 +97,7 @@
         input.setAttribute("name", "itemsToPurchase");
 
         field.appendChild(input);
+        field.appendChild(destination);
         document.body.appendChild(field);
 
         field.submit();
