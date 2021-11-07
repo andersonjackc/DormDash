@@ -461,6 +461,55 @@ namespace WebApplication1
             }
         }
 
+        public static Order selectOrderByOrderID(int orderID)
+        {
+
+            MySqlConnection conn = GetMySqlConnection();
+            try
+            {
+                conn.Open();
+                Order order = null;
+
+                string sql = "SELECT * from orders where order_id = @id;";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@id", orderID);
+
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
+                
+                if (rdr[0] != DBNull.Value && rdr[1] != DBNull.Value && rdr[2] != DBNull.Value && rdr[3] != DBNull.Value && rdr[4] != DBNull.Value && rdr[5] != DBNull.Value && rdr[6] != DBNull.Value && rdr[7] != DBNull.Value)
+                {
+
+                    String[] destinationStringArray = rdr[3].ToString().Split(':');
+                    Destination dest = new Destination((building)Enum.Parse(typeof(building), destinationStringArray[0]), Int32.Parse(destinationStringArray[1]));
+
+                    List<MenuItem> tempMenuItemList = new List<MenuItem>();
+                    String[] menuItemsStringArray = rdr[4].ToString().Split('$');
+                    menuItemsStringArray = menuItemsStringArray.SkipLast(1).ToArray();
+                    foreach (String item in menuItemsStringArray)
+                    {
+                        String[] menuItemVals = item.Split(':');
+
+                        MenuItem tempMenuItem = new MenuItem(menuItemVals[0], Double.Parse(menuItemVals[1]));
+                        tempMenuItemList.Add(tempMenuItem);
+                    }
+
+                    Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+
+                    order = tempOrder;
+                }
+                
+                rdr.Close();
+                return order;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+                return null;
+            }
+        }
+
         public static User selectUserByEmail(String email)
         {
 
