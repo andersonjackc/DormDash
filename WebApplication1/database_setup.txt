@@ -79,9 +79,9 @@ CREATE TABLE sparts_menu(
 INSERT INTO sparts_menu
 (itemname, itemdescription,imagepath, price, available)
 VALUES
-('pizza','fresh hot pizza', '/pizza.png', 8.00, 1),
-('sushi', 'california roll!', '/sushi.png',9.00, 0),
-('calzone', 'good calzone','/calzone.png',10.00, 1);
+('pizza','fresh hot pizza', '../../images/pizza.png', 8.00, 1),
+('sushi', 'california roll!', '../../images/sushi.png',9.00, 0),
+('calzone', 'good calzone','../../images/calzone.png',10.00, 1);
 
 
 

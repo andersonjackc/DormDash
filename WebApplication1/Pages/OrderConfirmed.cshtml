@@ -11,7 +11,7 @@
 @{
     Order currentOrder = HttpContext.Session.GetComplexObject<Order>("newOrder");
     <p>Order for user ID</p>
-    @curr.userId
+    @currentOrder.userId
 
     <p>Order # </p>
     @currentOrder.id;
