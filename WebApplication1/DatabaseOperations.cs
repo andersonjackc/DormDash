@@ -341,7 +341,7 @@ namespace WebApplication1
                            tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
@@ -392,7 +392,7 @@ namespace WebApplication1
                             tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
@@ -419,9 +419,9 @@ namespace WebApplication1
                 conn.Open();
                 List<Order> orders = new List<Order>();
 
-                string sql = "SELECT * from orders where claimed = @claimed;";
+                string sql = "SELECT * from orders where status = @status;";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@claimed", status);
+                cmd.Parameters.AddWithValue("@status", (Order.status)Enum.Parse(typeof(Order.status), status.ToString()));
 
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -443,7 +443,7 @@ namespace WebApplication1
                             tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
