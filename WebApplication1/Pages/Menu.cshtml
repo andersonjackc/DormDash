@@ -95,7 +95,13 @@
         var destination = document.getElementById("dest");
         var itemsToPurchase = "";
         var roomNum = document.getElementById("roomNum");
-        var paymentMethod = document.getElementsByName("payment_method")[0];
+        var paymentMethods = document.getElementsByName("payment_method");
+        var paymentMethod;
+        for (pm of paymentMethods) {
+            if (pm.checked) {
+                paymentMethod = pm;
+            }
+        }
 
         for (orderItem of orderItemsArr) {
             if (orderItem.checked) {
