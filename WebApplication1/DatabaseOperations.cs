@@ -341,7 +341,7 @@ namespace WebApplication1
                            tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
@@ -392,7 +392,7 @@ namespace WebApplication1
                             tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
@@ -443,7 +443,7 @@ namespace WebApplication1
                             tempMenuItemList.Add(tempMenuItem);
                         }
 
-                        Order tempOrder = new Order((int)rdr[0], (int)rdr[1], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
+                        Order tempOrder = new Order((int)rdr[0], (int)rdr[2], DateTime.Parse(rdr[6].ToString()), (double)(decimal)rdr[5], dest, tempMenuItemList, ((int)rdr[7]) == 1 ? true : false);
 
                         orders.Add(tempOrder);
                     }
