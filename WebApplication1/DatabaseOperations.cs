@@ -458,6 +458,36 @@ namespace WebApplication1
             }
         }
 
+        public void updateUser(User user)
+        {
+            MySqlConnection conn = GetMySqlConnection();
+
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand();
+
+                string sql = "UPDATE users SET user_type=@user_type , dining_balance=@dining_balance , flex_balance=@flex_balance , email=@email " +
+                    "WHERE user_id = @id";
+
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("@user_type", user.userType);
+                cmd.Parameters.AddWithValue("@dining_balance", user.diningBalance);
+                cmd.Parameters.AddWithValue("@flex_balance", user.flexBalance);
+                cmd.Parameters.AddWithValue("@email", user.email);
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                conn.Close();
+            }
+
+        }
+
     }
 }
 
