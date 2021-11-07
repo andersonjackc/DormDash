@@ -5,6 +5,7 @@
 @{ 
     string errMessage;
     User user;
+    Destination dest;
 }
 
 
@@ -43,6 +44,14 @@
             </div>
 
         }
+
+        <select name="dest" id="dest">
+            @{foreach (int i in Enum.GetValues(typeof(building)))
+                { 
+
+                }
+            }
+        </select>
 
         @if ((user = HttpContext.Session.GetComplexObject<User>("user")) != null)
         {
