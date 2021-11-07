@@ -8,7 +8,6 @@ namespace WebApplication1
 {
     public class MenuItem
     {
-        [JsonConstructor]
         public MenuItem(int id, String name, String description, String imagePath, double price, Boolean available)
         {
             this.Name = name;
@@ -19,6 +18,7 @@ namespace WebApplication1
             this.available = available;
         }
 
+        [JsonConstructor]
         public MenuItem(String name, double price)
         {
             this.Name = name;
