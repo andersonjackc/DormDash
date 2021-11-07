@@ -23,7 +23,7 @@ namespace DormDash.Pages
             else if(loggedInCustomer.userType == UserType.Employee)
             {
                 List<Order> ordersReadyToPickUp = DatabaseOperations.selectOrdersByStatus(Order.status.pickupReady);
-                HttpContext.Session.SetComplexObject<List<Order>>("orderList", ordersReadyToPickUp);
+                HttpContext.Session.SetComplexObject<List<Order>>("ordersReadyForPickUp", ordersReadyToPickUp);
             }
             else
             {
