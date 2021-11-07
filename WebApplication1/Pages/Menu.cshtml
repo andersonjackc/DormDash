@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model DormDash.Pages.MenuModel
 @using DormDash;
 @using Microsoft.AspNetCore.Http;
@@ -28,6 +28,7 @@
             foreach (MenuItem menuItem in menuItems)
             {
                 <div class="card-dark" style="width: 18rem;">
+                  <img src=".@menuItem.imagePath" width="200" height="200">
                     <div class="card-body dark-mode">
                         <h5 class="card-title text-middle">@menuItem.Name</h5>
                         <p class="card-text">Price: $<span name="orderPrice">@menuItem.price</span></p>
