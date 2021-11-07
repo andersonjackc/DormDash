@@ -117,7 +117,7 @@ namespace WebApplication1
                     "VALUES (@status, @userid, @dest, @items, @total, @datetime, @claimed)";
 
                 cmd.CommandText = sql;
-                cmd.Parameters.AddWithValue("@status", order.Status);
+                cmd.Parameters.AddWithValue("@status", (int)order.Status);
                 cmd.Parameters.AddWithValue("@userid", order.userId);
                 String dest = order.orderDestination.building + ":" + order.orderDestination.roomNumber;
                 cmd.Parameters.AddWithValue("@dest", dest);
@@ -204,7 +204,7 @@ namespace WebApplication1
                     "WHERE order_id = @id";
 
                 cmd.CommandText = sql;
-                cmd.Parameters.AddWithValue("@status", order.Status);
+                cmd.Parameters.AddWithValue("@status", (int)order.Status);
                 cmd.Parameters.AddWithValue("@userid", order.userId);
                 String dest = order.orderDestination.building + ":" + order.orderDestination.roomNumber;
                 cmd.Parameters.AddWithValue("@dest", dest);
